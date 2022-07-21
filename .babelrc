@@ -1,0 +1,6 @@
+// Helps with the issues of parsing JSON inside of data functions inside of Next.js
+// with things like date objects 
+{
+    "presets": ["next/babel"],
+    "plugins": ["superjson-next"]
+}

@@ -28,6 +28,8 @@ model Song {
   artist Artist @relation(fields: [artistId], references: [id])
   artistId Int
   playlists Playlist[]
+  duration Int
+  url String
 }
 
 model Artist {

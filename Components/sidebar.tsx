@@ -2,6 +2,7 @@ import { Box, List, ListItem, Divider, Center, LinkBox, LinkOverlay, ListIcon } 
 import { MdHome, MdSearch, MdLibraryMusic, MdPlaylistAdd, MdFavorite } from 'react-icons/md'
 import Image from "next/image"
 import Link from "next/link"
+import { usePlaylist } from "../lib/hooks"
 
 const navMenu = [
     { name: 'Home', icon: MdHome, route: '/' },
@@ -14,11 +15,13 @@ const musicMenu = [
     { name: 'Favorites', icon: MdFavorite, route: '/favorites' },
 ]
 
-const playlists = new Array(30).fill(1).map((_, i) => `Playlist ${i + 1}`)
+// const playlists = new Array(30).fill(1).map((_, i) => `Playlist ${i + 1}`)
 
 // Refactor ListItems into sepearte component
 
 const Sidebar = () => {
+    const { playlists } = usePlaylist()
+
     return (
         <Box width="100%" height="calc(100vh - 100px)" bg="black" paddingX="5px" color="gray">
             <Box paddingY="20px" height="100%">
@@ -62,11 +65,11 @@ const Sidebar = () => {
                 <Box height="73%" overflowY="auto" paddingY="20px">
                     <List spacing={2}>
                         {playlists.map((playlist) => (
-                            <ListItem paddingX="20px" key={playlist}>
+                            <ListItem paddingX="20px" key={playlist.id}>
                                 <LinkBox>
                                     <Link href="/">
                                         <LinkOverlay>
-                                            {playlist}
+                                            {playlist.name}
                                         </LinkOverlay>
                                     </Link>
                                 </LinkBox>

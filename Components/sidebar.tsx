@@ -15,7 +15,6 @@ const musicMenu = [
     { name: 'Favorites', icon: MdFavorite, route: '/favorites' },
 ]
 
-// const playlists = new Array(30).fill(1).map((_, i) => `Playlist ${i + 1}`)
 
 // Refactor ListItems into sepearte component
 

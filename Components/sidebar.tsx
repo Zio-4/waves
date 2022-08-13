@@ -3,6 +3,7 @@ import { MdHome, MdSearch, MdLibraryMusic, MdPlaylistAdd, MdFavorite } from 'rea
 import Image from "next/image"
 import Link from "next/link"
 import { usePlaylist } from "../lib/hooks"
+import logo from '../public/logo/wave-logo.svg'
 
 const navMenu = [
     { name: 'Home', icon: MdHome, route: '/' },
@@ -26,7 +27,7 @@ const Sidebar = () => {
         <Box width="100%" height="calc(100vh - 100px)" bg="black" paddingX="5px" color="gray">
             <Box paddingY="20px" height="100%">
                 <Box width="120px" marginBottom="20px" paddingX="20px">
-                    <Image src="/logo/multicolor-wave.svg" height={60} width={120}/>
+                    <Image src={logo} height={60} width={120}/>
                 </Box>
                 <Box marginBottom="20px">
                     <List spacing={2}>

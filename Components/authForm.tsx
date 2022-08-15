@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { Box, Flex, Input, Button, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { useSWRConfig } from 'swr'
@@ -10,8 +10,18 @@ import Link from 'next/link'
 const AuthForm: FC<{ mode: 'signup' | 'signin' }> = ({ mode }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
+
+    useEffect(() => {
+
+    
+      return () => {
+        setIsLoading(false)
+      }
+    }, [])
+    
 
 
 const handleSubmit = async (e) => {
@@ -19,9 +29,11 @@ const handleSubmit = async (e) => {
     setIsLoading(true)
     
     const user = await auth(mode, { email, password })
-    setIsLoading(false)
+
     router.push('/')
+    // setIsLoading(false)
 }
+console.log(mode)
 
   return (
     <Box height='100vh' width='100vw' bg='black' color='white'>
@@ -41,13 +53,22 @@ const handleSubmit = async (e) => {
                     <Box paddingBottom='1rem'>
                         <Input borderRadius='2rem' bg='white' textColor='black' placeholder='Password' type='password' onChange={(e) => setPassword(e.target.value)} />
                     </Box>
+                    {mode === 'signup' ? (
+                    <Box paddingBottom='1rem'>
+                        <Input borderRadius='2rem' bg='white' textColor='black' placeholder='Confirm Password' type='password' onChange={(e) => setConfirmPassword(e.target.value)} />
+                    </Box>
+                    ) : null}
                     <Box >
                         <Button width='100%' borderRadius='2rem' type='submit' bg='green.400' isLoading={isLoading} sx={{'&:hover': { bg: 'green.300'}}}>{mode === 'signin' ? 'SIGN IN' : 'SIGN UP'}</Button>
                     </Box>
                 </form>
 
-                <Box  display={ mode === 'signin' ? 'block' : 'none' } paddingTop='2rem'>
-                    <Text textAlign='center'>Don't have an account? <Link href='/signup'>SIGN UP</Link></Text>
+                <Box paddingTop='2rem'>
+                    {mode === 'signin' ? (
+                        <Text textAlign='center'>Don't have an account? {<Link href='/signup' ><Text display='inline' cursor='pointer' decoration='underline' textUnderlineOffset='0.2rem'>SIGN UP</Text></Link>}</Text> 
+                    ) : (
+                        <Text textAlign='center'>Aleady have an account? {<Link href='/signin'><Text display='inline' cursor='pointer' decoration='underline' textUnderlineOffset='0.2rem'>SIGN IN</Text></Link>}</Text>
+                    )}      
                 </Box>
             </Box>
         </Flex>

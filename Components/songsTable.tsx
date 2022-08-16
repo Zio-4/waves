@@ -14,6 +14,8 @@ const SongTable = ({ songs }) => {
         playSongs(songs)
     }
 
+    console.log('songs', songs)
+
   return (
     <Box bg="transparent" color="white">
         <Box padding="10px" marginBottom="20px">

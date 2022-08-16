@@ -12,6 +12,7 @@ const getBGColor = (id) => {
 const Playlist = ({ playlist }) => {
     const color = getBGColor(playlist.id)
 
+
   return (
     <GradientLayout 
         color={color} 
@@ -40,7 +41,6 @@ export const getServerSideProps = async ({ query, req }) => {
         }
     }
 
-
     // Using find many to make sure the playlist is the right one AND belongs to the current user
     const [playlist] = await prisma.playlist.findMany({
         where: {
@@ -60,6 +60,7 @@ export const getServerSideProps = async ({ query, req }) => {
             },
         },
     })
+
 
     return {
         props: { playlist }

@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
 import prisma from '../../lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { artistsData } from '../../prisma/songsData'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     const salt = bcrypt.genSaltSync()
@@ -20,6 +21,44 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 lastName: lastName
             }
         })
+
+        await Promise.all(artistsData.map( async (artist) => {
+            // upsert: Create or update
+            return prisma.artist.upsert({
+                where: { name: artist.name },
+                update: {},
+                create: {
+                    name: artist.name,
+                        songs: {
+                            create: artist.songs.map(song => ({
+                                name: song.name,
+                                duration: song.duration,
+                                url: song.url,
+                            }))
+                        }
+                } 
+            })
+        }))
+
+        const songs = await prisma.song.findMany({})
+        await Promise.all(new Array(9).fill(1).map( async (_, i) => {
+            return prisma.playlist.create({
+                data: {
+                    name: `Playlist #${i + 1}`,
+                    // To make sure Prisma connects the user with this id to the user on this playlist
+                    user: {
+                        connect: { id: user.id },
+                        },
+                        songs: {
+                            connect: songs.map((song) => ({
+                                id: song.id,
+                            }))
+                    }
+                }
+            })
+        }))
+
+
     } catch (e) {
         console.error(e)
         res.status(401).json({ error: 'User already exists' })

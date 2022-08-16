@@ -27,7 +27,8 @@ const Sidebar = () => {
     const [pageLoading, setPageLoading] = useState(false)
     const router = useRouter()
     const { id } = router.query
-    console.log('id', id)
+    console.log('route id', id)
+    console.log('playlists', playlists)
 
     useEffect(() => {
         if (!isLoading) {
@@ -90,13 +91,13 @@ const Sidebar = () => {
                                     <LinkBox>
                                             <Link href={{
                                                 pathname: '/playlist/[id]',
-                                                // query: { id: playlist.id }
-                                                query: {id: parseInt(playlist.name[playlist.name.length - 1])}
+                                                query: { id: playlist.id }
                                                 }}
                                                 passHref
                                             >
-                                                <LinkOverlay color={playlist.name[playlist.name.length - 1] === id ? 'white' : 'gray'}>
-                                                    {playlist.id !== 7 ? playlist.name : null}
+                                                <LinkOverlay color={playlist.id === id ? 'white' : 'gray'}>
+                                                    {/* {playlist.id !== 7 ? playlist.name : null} */}
+                                                    {playlist.name}
                                                 </LinkOverlay>
                                             </Link>
                                     </LinkBox>

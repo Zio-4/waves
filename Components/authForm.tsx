@@ -9,6 +9,8 @@ import Link from 'next/link'
 
 const AuthForm: FC<{ mode: 'signup' | 'signin' }> = ({ mode }) => {
     const [email, setEmail] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -23,17 +25,21 @@ const AuthForm: FC<{ mode: 'signup' | 'signin' }> = ({ mode }) => {
     }, [])
     
 
-
 const handleSubmit = async (e) => {
     e.preventDefault()
+    if (mode === 'signup') {
+        if (!email || !firstName || !lastName || !password || !confirmPassword) return
+    } else if (!email || !password) {
+        return
+    }
+
     setIsLoading(true)
     
-    const user = await auth(mode, { email, password })
+    const user = await auth(mode, { email, password, firstName, lastName })
 
     router.push('/')
-    // setIsLoading(false)
 }
-console.log(mode)
+
 
   return (
     <Box height='100vh' width='100vw' bg='black' color='white'>
@@ -54,8 +60,16 @@ console.log(mode)
                         <Input borderRadius='2rem' bg='white' textColor='black' placeholder='Password' type='password' onChange={(e) => setPassword(e.target.value)} />
                     </Box>
                     {mode === 'signup' ? (
-                    <Box paddingBottom='1rem'>
-                        <Input borderRadius='2rem' bg='white' textColor='black' placeholder='Confirm Password' type='password' onChange={(e) => setConfirmPassword(e.target.value)} />
+                    <Box>
+                        <Box paddingBottom='1rem'>
+                            <Input borderRadius='2rem' bg='white' textColor='black' placeholder='Confirm Password' type='password' onChange={(e) => setConfirmPassword(e.target.value)} />
+                        </Box>
+                        <Box paddingBottom='1rem'>
+                            <Input borderRadius='2rem' bg='white' textColor='black' placeholder='First Name' type='text' onChange={(e) => setFirstName(e.target.value)} />
+                        </Box>
+                        <Box paddingBottom='1rem'>
+                            <Input borderRadius='2rem' bg='white' textColor='black' placeholder='Last Name' type='text' onChange={(e) => setLastName(e.target.value)} />
+                        </Box>
                     </Box>
                     ) : null}
                     <Box >

@@ -1,6 +1,6 @@
 // import '../styles/globals.css'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
-import PlayerLayout from '../Components/playerLayout';
+import PlayerLayout from '../Components/PlayerLayout';
 // resets the css to be the same in every browser
 import 'reset-css';
 import { StoreProvider } from 'easy-peasy';

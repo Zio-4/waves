@@ -5,10 +5,8 @@ import { useMe } from '../lib/hooks'
 import prisma from '../lib/prisma'
 import { useEffect, useState } from 'react'
 
-const profilePicId = Math.floor(Math.random() * 1000)
-
  
-function Home({ artists }) {
+function Home({ artists, image }) {
   const [userIsLoaded, setUserIsLoaded] = useState(false)
   const { user, isLoading } = useMe()
 
@@ -18,13 +16,14 @@ function Home({ artists }) {
     }
   }, [isLoading])
 
+
   return (
     <GradientLayout 
       color='gray' 
       subtitle="profile"
       title={`${user?.firstName} ${user?.lastName}`} 
       description={`${user?.playlistsCount - 1} public playlists`}
-      image={`https://picsum.photos/400?random=${profilePicId}`}
+      image={image}
       roundImage
     >
 
@@ -60,8 +59,11 @@ function Home({ artists }) {
 export const getServerSideProps = async () => {
   const artists = await prisma.artist.findMany()
 
+  const imageId = Math.floor(Math.random() * 1000)
+  const image = `https://picsum.photos/400?random=${imageId}`
+
   return {
-    props: { artists }
+    props: { artists, image }
   }
 }
 

@@ -27,8 +27,7 @@ const Sidebar = () => {
     const [pageLoading, setPageLoading] = useState(false)
     const router = useRouter()
     const { id } = router.query
-    console.log('route id', id)
-    console.log('playlists', playlists)
+
 
     useEffect(() => {
         if (!isLoading) {

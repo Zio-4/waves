@@ -33,7 +33,7 @@ const SongTable = ({ songs }) => {
             </Box>
             <Table variant="unstyled">
                 <Thead borderBottom="1px solid" borderColor="rgba(255,255,255,0.2)">
-                    <Tr color='gray.500'>
+                    <Tr >
                         <Th>#</Th>
                         <Th>Title</Th>
                         <Th>Date Added</Th>

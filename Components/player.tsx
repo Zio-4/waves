@@ -21,6 +21,11 @@ const Player = ({ songs, activeSong }) => {
     const repeatRef = useRef(repeat)
     const setActiveSong = useStoreActions((state: any) => state.changeActiveSong)
 
+    console.log('active song:', activeSong)
+    console.log('songs:', songs)
+    console.log('index:', index)
+    console.log('soundRef', soundRef)
+
     useEffect(() => {
         let timerId 
 

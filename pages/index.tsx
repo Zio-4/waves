@@ -28,22 +28,24 @@ function Home({ artists }) {
       roundImage
     >
 
-      <Box color="white" paddingX="40px">
-        <Box marginBottom="40px">
+      <Box color="white" paddingX="2.5rem">
+        <Box marginBottom="1rem" marginLeft=".6rem">
           <Text fontSize="2xl" fontWeight="bold">Top artist this month</Text>
-          <Text fontSize="md">Only visible to you</Text>
+          <Box marginTop='1rem'>
+            <Text fontSize="md">Only visible to you</Text>
+          </Box>
         </Box>
         <Flex>
           {artists.map((artist) => (
-            <Box paddingX="10px" width="20%" key={artist.name}>
-              <Box bg="gray.900" borderRadius="4px" padding="15px" width="100%">
-                <SkeletonCircle size='40' isLoaded={userIsLoaded}>
+            <Box paddingX=".6rem" width="20%" key={artist.name}>
+              <Box bg="gray.900" borderRadius="4px" padding="1.2rem" width="100%">
+                <SkeletonCircle size='100%' isLoaded={userIsLoaded}>
                   <Image src="https://placekitten.com/300/300" borderRadius="100%"/>
                 </SkeletonCircle>
                 <Box marginTop="20px">
                   <SkeletonText isLoaded={userIsLoaded}>
                     <Text fontSize="large">{artist.name}</Text>
-                    <Text fontSize="x-small">Artist</Text>
+                    <Text fontSize="small">Artist</Text>
                   </SkeletonText>
                 </Box>
               </Box>

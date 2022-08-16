@@ -27,7 +27,7 @@ const Sidebar = () => {
     const [pageLoading, setPageLoading] = useState(false)
     const router = useRouter()
     const { id } = router.query
-    console.log(typeof  id)
+    console.log('id', id)
 
     useEffect(() => {
         if (!isLoading) {
@@ -51,7 +51,7 @@ const Sidebar = () => {
                             <ListItem paddingX="20px" fontSize="16px" key={menu.name}>
                                 <LinkBox>
                                     <Link href={menu.route} passHref>
-                                        <LinkOverlay>
+                                        <LinkOverlay color={id === undefined && menu.name === 'Home' ? 'white' : 'gray'}>
                                             <ListIcon as={menu.icon} color="white" marginRight="20px" />
                                             {menu.name}
                                         </LinkOverlay>
@@ -79,6 +79,7 @@ const Sidebar = () => {
                     </List>
                 </Box>
                 <Divider color="gray.800"/>
+
                 <Box height="66%" overflowY="auto" paddingY="20px">
                     <Skeleton />
 

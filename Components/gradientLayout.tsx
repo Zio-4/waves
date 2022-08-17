@@ -45,11 +45,7 @@ const GradientLayout = ({
                   
                   <Skeleton isLoaded={userIsLoaded}>
                     <Text fontSize="6xl" fontWeight='extrabold' marginTop='none'>
-                      {title.includes('Playlist') ? (
-                        `Playlist ${id}`
-                      ) : (
-                        title
-                      ) }
+                      {title}
                     </Text>
                   </Skeleton>
                   

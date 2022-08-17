@@ -27,7 +27,6 @@ const Sidebar = () => {
     const router = useRouter()
     const { id } = router.query
 
-
     useEffect(() => {
         if (!isLoading) {
             setPlaylistLoaded(true)
@@ -93,7 +92,7 @@ const Sidebar = () => {
                                                 }}
                                                 passHref
                                             >
-                                                <LinkOverlay color={playlist.id === id ? 'white' : 'gray'}>
+                                                <LinkOverlay color={playlist.id === +id ? 'white' : 'gray'}>
                                                     {/* {playlist.id !== 7 ? playlist.name : null} */}
                                                     {playlist.name}
                                                 </LinkOverlay>

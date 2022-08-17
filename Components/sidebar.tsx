@@ -19,7 +19,6 @@ const musicMenu = [
     { name: 'Favorites', icon: MdFavorite, route: '/' },
 ]
 
-// Refactor ListItems into sepearte component
 
 const Sidebar = () => {
     const { playlists } = usePlaylist()

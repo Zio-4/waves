@@ -19,7 +19,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             id: user.id,
             email: user.email,
             time: Date.now()
-            // Add env variable
         }, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIRES_IN
         })
@@ -34,6 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         res.json(user)
     } else {
-        res.status(401).json({ error: 'Email or Password is incorrect'})
+        res.status(401)
+        res.json({ error: 'Email or Password is incorrect'})
     }
 } 

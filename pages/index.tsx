@@ -22,7 +22,7 @@ function Home({ artists, image }) {
       color='gray' 
       subtitle="profile"
       title={`${user?.firstName} ${user?.lastName}`} 
-      description={`${user?.playlistsCount - 1} public playlists`}
+      description={`${user?.playlistsCount} public playlists`}
       image={image}
       roundImage
     >

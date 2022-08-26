@@ -26,9 +26,10 @@ const GradientLayout = ({
 
   // Add modal to check if user wants to sign out? 
   const signOut = () => {
-    let res = fetch('/api/signout')
-              .then((r) => r.json())
-              .then((data) => console.log('signout response: ', data))
+    fetch('/api/signout')
+      .then((r) => r.json())
+      .then((data) => console.log('signout response: ', data))
+      .catch(e => console.error(e))
     router.push('/signin')
   }
 
@@ -37,15 +38,15 @@ const GradientLayout = ({
   return (
     <Box height="100%" overflowY="auto" bgGradient={`linear(${color}.500 0%, ${color}.600 15%, ${color}.700 40%, rgba(0,0,0,0.95) 75%)`}>
         <Flex bg={`${color}.600`} justify="end">
-          <Box>
-            <Button colorScheme='blackAlpha' rounded='2rem' size="sm" onClick={signOut}>
+          <Box paddingTop="1rem" paddingRight="3rem">
+            <Button colorScheme='blackAlpha' rounded='2rem' size="sm"  onClick={signOut}>
                 Sign Out
             </Button>
           </Box>
         </Flex>
 
 
-        <Flex bg={`${color}.600`} padding="40px" align="end">
+        <Flex bg={`${color}.600`} paddingX="40px" paddingBottom="40px" align="end">
 
               <Box padding="20px">
                 <SkeletonCircle size='40' isLoaded={userIsLoaded}>

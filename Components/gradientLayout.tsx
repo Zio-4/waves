@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from '@chakra-ui/layout'
-import { Image, Skeleton, SkeletonCircle, Stack} from '@chakra-ui/react'
+import { Button, Image, Skeleton, SkeletonCircle, Stack} from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
@@ -24,10 +24,29 @@ const GradientLayout = ({
   }, [title])
 
 
+  // Add modal to check if user wants to sign out? 
+  const signOut = () => {
+    fetch('/api/signout')
+      .then((r) => r.json())
+      .then((data) => console.log('signout response: ', data))
+      .catch(e => console.error(e))
+    router.push('/signin')
+  }
+
+
 
   return (
     <Box height="100%" overflowY="auto" bgGradient={`linear(${color}.500 0%, ${color}.600 15%, ${color}.700 40%, rgba(0,0,0,0.95) 75%)`}>
-        <Flex bg={`${color}.600`} padding="40px" align="end">
+        <Flex bg={`${color}.600`} justify="end">
+          <Box paddingTop="1rem" paddingRight="3rem">
+            <Button colorScheme='blackAlpha' rounded='2rem' size="sm"  onClick={signOut}>
+                Sign Out
+            </Button>
+          </Box>
+        </Flex>
+
+
+        <Flex bg={`${color}.600`} paddingX="40px" paddingBottom="40px" align="end">
 
               <Box padding="20px">
                 <SkeletonCircle size='40' isLoaded={userIsLoaded}>
@@ -56,6 +75,8 @@ const GradientLayout = ({
                   </Skeleton>
                 </Stack>
               </Box>
+
+
         </Flex>
         <Box paddingY="50px">
           {children}

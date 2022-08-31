@@ -16,7 +16,6 @@ function Home({ artists, image }) {
     }
   }, [isLoading])
 
-
   return (
     <GradientLayout 
       color='gray' 
@@ -25,6 +24,7 @@ function Home({ artists, image }) {
       description={`${user?.playlistsCount} public playlists`}
       image={image}
       roundImage
+      // likedSongs={user.likedSongs}
     >
 
       <Box color="white" paddingX="2.5rem">

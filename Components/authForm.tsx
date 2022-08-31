@@ -6,6 +6,7 @@ import { auth } from '../lib/mutations'
 import Image from 'next/image'
 import logo from '../public/logo/wave-logo.svg'
 import Link from 'next/link'
+import { useStoreActions } from 'easy-peasy'
 
 const AuthForm: FC<{ mode: 'signup' | 'signin' }> = ({ mode }) => {
     const [email, setEmail] = useState('')
@@ -15,6 +16,7 @@ const AuthForm: FC<{ mode: 'signup' | 'signin' }> = ({ mode }) => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
+    const setFavoriteSongsInStore = useStoreActions((store: any) => store.setFavoriteSongs)
 
     useEffect(() => {
 
@@ -36,6 +38,10 @@ const handleSubmit = async (e) => {
     setIsLoading(true)
     
     const user = await auth(mode, { email, password, firstName, lastName })
+    console.log('user response from sign in', user)
+
+    setFavoriteSongsInStore(user.favorites)
+    localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(user.favorites))
 
     router.push('/')
 }

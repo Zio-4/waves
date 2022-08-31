@@ -15,14 +15,12 @@ const SongTable = ({ songs }) => {
   const favoriteSongs = useStoreState((store: any) => store.favoriteSongs)
 
   useEffect(() => {
-    if (favoriteSongs.length === 0) {
       try {
         const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
         setFavoriteSongs(parsedFavoriteSongs)
       } catch(e) {
         console.log('Favorite songs are not in localStorage')
       } 
-    }
   }, [])
 
   const handlePlay = (activeSong?) => {
@@ -40,6 +38,11 @@ const SongTable = ({ songs }) => {
     })
       .then(r => r.json())
       .then(response => console.log('Response from adding song', response))
+    
+    // Update localStorage
+    const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
+    parsedFavoriteSongs.push(songName)
+    localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(parsedFavoriteSongs))
   }
 
   const handleRemoveSong = async (songName: string) => {
@@ -52,6 +55,11 @@ const SongTable = ({ songs }) => {
     })
       .then(r => r.json())
       .then(response => console.log('Response from deleting song', response))
+       
+    // Update localStorage
+    const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
+    const songRemovedFavorites = parsedFavoriteSongs.filter(song => song !== songName)
+    localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(songRemovedFavorites))
   }
 
 

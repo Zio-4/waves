@@ -105,7 +105,7 @@ const SongTable = ({ songs }) => {
                 <Td onClick={() => handlePlay(song)}>{i + 1}</Td>
                 <Td onClick={() => handlePlay(song)}>{song.name}</Td>
                 <Td onClick={() => handlePlay(song)}>{formatDate(song.createdAt)}</Td>
-                <Td >
+                <Td paddingRight="0" width="1rem">
                   {favoriteSongs.includes(song.name) ? <AiFillHeart onClick={() => handleRemoveSong(song.name)}/> : <AiOutlineHeart onClick={() => handleAddSong(song.name)} />}
                 </Td>
                 <Td onClick={() => handlePlay(song)}>

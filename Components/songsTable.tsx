@@ -36,8 +36,8 @@ const SongTable = ({ songs }) => {
       body: JSON.stringify({songName: songName}),
       headers: { 'Content-type': 'application/json' }
     })
-      .then(r => r.json())
-      .then(response => console.log('Response from adding song', response))
+      // .then(r => r.json())
+      // .then(response => console.log('Response from adding song', response))
     
     // Update localStorage
     const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
@@ -53,8 +53,8 @@ const SongTable = ({ songs }) => {
       body: JSON.stringify({songName: songName}),
       headers: { 'Content-type': 'application/json' }
     })
-      .then(r => r.json())
-      .then(response => console.log('Response from deleting song', response))
+      // .then(r => r.json())
+      // .then(response => console.log('Response from deleting song', response))
        
     // Update localStorage
     const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
@@ -62,8 +62,6 @@ const SongTable = ({ songs }) => {
     localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(songRemovedFavorites))
   }
 
-
-  console.log('favorites :', favoriteSongs)
 
   return (
     <Box bg="transparent" color="white">

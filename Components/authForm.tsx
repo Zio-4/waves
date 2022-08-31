@@ -38,7 +38,6 @@ const handleSubmit = async (e) => {
     setIsLoading(true)
     
     const user = await auth(mode, { email, password, firstName, lastName })
-    console.log('user response from sign in', user)
 
     setFavoriteSongsInStore(user.favorites)
     localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(user.favorites))

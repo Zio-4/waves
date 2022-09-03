@@ -21,6 +21,8 @@ const getBGColor = (id) => {
 const Playlist = ({ playlist }) => {
   const color = getBGColor(playlist.id)
 
+  console.log('playlist: ', playlist)
+
   return (
     <GradientLayout
       color={color}
@@ -38,16 +40,16 @@ const Playlist = ({ playlist }) => {
 export const getServerSideProps = async ({ query, req }) => {
   let user
 
-  try {
-    user = validateToken(req.cookies.WAVES_ACCESS_TOKEN)
-  } catch (e) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/signin',
-      },
-    }
-  }
+  // try {
+  //   user = validateToken(req.cookies.WAVES_ACCESS_TOKEN)
+  // } catch (e) {
+  //   return {
+  //     redirect: {
+  //       permanent: false,
+  //       destination: '/signin',
+  //     },
+  //   }
+  // }
 
   const [playlist] = await prisma.playlist.findMany({
     where: {

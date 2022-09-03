@@ -7,6 +7,8 @@ import logo from '../public/logo/wave-logo.svg'
 import { Skeleton, SkeletonCircle, SkeletonText, Spinner } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { useStoreState } from 'easy-peasy'
+import { guestPlaylist } from "../lib/guestPlaylist"
 
 const navMenu = [
     { name: 'Home', icon: MdHome, route: '/' },
@@ -21,21 +23,30 @@ const musicMenu = [
 
 
 const Sidebar = () => {
-    const { playlists, isLoading } = usePlaylist()
+    const currentUser = useStoreState((store: any) => store.currentUser)
+    const [userPlaylists, setUserPlaylists] = useState([])
+    const [playlistsLoading, setPlaylistsLoading] = useState(true)
     const [playlistLoaded, setPlaylistLoaded] = useState(false)
-    const [pageLoading, setPageLoading] = useState(false)
     const router = useRouter()
     const { id } = router.query
 
     useEffect(() => {
-        if (!isLoading) {
-            setPlaylistLoaded(true)
+        if (currentUser.firstName) {
+            const { playlists, isLoading } = usePlaylist()
+            setPlaylistsLoading(isLoading)
+            setUserPlaylists(playlists)
         }
-    }, [isLoading])
+    }, [currentUser])
+
 
     useEffect(() => {
-        return () => setPageLoading(false)
-    }, [])
+        if (!playlistsLoading) {
+            setPlaylistLoaded(true)
+        }
+    }, [playlistsLoading])
+
+
+    console.log('Sidebar rerender')
 
     return (
         <Box width="100%" height="calc(100vh - 100px)" bg="black" paddingX="5px" color="gray">
@@ -83,22 +94,21 @@ const Sidebar = () => {
 
                     <List spacing={2}>
                     
-                        {playlistLoaded && playlists.map((playlist) => (
-                                <ListItem paddingX="20px" key={playlist.id}>
-                                    <LinkBox>
-                                            <Link href={{
-                                                pathname: '/playlist/[id]',
-                                                query: { id: playlist.id }
-                                                }}
-                                                passHref
-                                            >
-                                                <LinkOverlay color={playlist.id === +id ? 'white' : 'gray'}>
-                                                    {/* {playlist.id !== 7 ? playlist.name : null} */}
-                                                    {playlist.name}
-                                                </LinkOverlay>
-                                            </Link>
-                                    </LinkBox>
-                                </ListItem>
+                        {playlistLoaded && userPlaylists.map((playlist, i) => (
+                            <ListItem paddingX="20px" key={playlist.id}>
+                                <LinkBox>
+                                        <Link href={{
+                                            pathname: '/playlist/[id]',
+                                            query: { id: playlist.id }
+                                            }}
+                                            passHref
+                                        >
+                                            <LinkOverlay color={playlist.id === +id ? 'white' : 'gray'}>
+                                                {playlist.name}
+                                            </LinkOverlay>
+                                        </Link>
+                                </LinkBox>
+                            </ListItem>
                         ))}
 
                         {!playlistLoaded && (

@@ -6,7 +6,6 @@ import { MdShuffle, MdSkipPrevious, MdSkipNext, MdOutlinePlayCircleFilled, MdOut
 import { useStoreActions } from 'easy-peasy'
 import { formatTime } from "../lib/formatters"
 
-
 const Player = ({ songs, activeSong }) => {
     const [playing, setPlaying] = useState(true)
     const [index, setIndex] = useState(

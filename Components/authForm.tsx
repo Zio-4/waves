@@ -17,10 +17,9 @@ const AuthForm: FC<{ mode: 'signup' | 'signin' }> = ({ mode }) => {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter()
     const setFavoriteSongsInStore = useStoreActions((store: any) => store.setFavoriteSongs)
+    const setCurrentUser = useStoreActions((store: any) => store.setCurrentUser)
 
     useEffect(() => {
-
-    
       return () => {
         setIsLoading(false)
       }
@@ -41,6 +40,10 @@ const handleSubmit = async (e) => {
 
     setFavoriteSongsInStore(user.favorites)
     localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(user.favorites))
+
+    let currUser = {firstName: user.firstName, lastName: user.lastName,}
+    setCurrentUser(currUser)
+    localStorage.setItem('currentUser', JSON.stringify(currUser))
 
     router.push('/')
 }

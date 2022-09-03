@@ -4,13 +4,26 @@ import GradientLayout from '../Components/gradientLayout'
 import { useMe } from '../lib/hooks'
 import prisma from '../lib/prisma'
 import { useEffect, useState } from 'react'
+import { useStoreActions, useStoreState } from 'easy-peasy'
 
  
 function Home({ artists, image }) {
   const [userIsLoaded, setUserIsLoaded] = useState(false)
-  const { user, isLoading } = useMe()
+  const { user, isLoading, isError } = useMe()
 
   useEffect(() => {
+    // if (!currentUser.firstName) {
+    //   try {
+    //     const userInStorage = JSON.parse(localStorage.getItem("currentUser") || "")
+    //     if (userInStorage) {
+    //       setUser(userInStorage)
+    //     }
+    //   } catch (e) {
+    //     console.error("currentUser is not in local storage. Error: ", e)
+    //   }
+    // }
+
+    // Stop loading animation if user has loaded or if the current is a guest (does not have first name)
     if (!isLoading) {
       setUserIsLoaded(true)
     }
@@ -20,11 +33,10 @@ function Home({ artists, image }) {
     <GradientLayout 
       color='gray' 
       subtitle="profile"
-      title={`${user?.firstName} ${user?.lastName}`} 
-      description={`${user?.playlistsCount} public playlists`}
+      title={isError ? 'Guest' : `${user?.firstName} ${user?.lastName}` } 
+      description={isError ? '1 public playlist' : `${user?.playlistsCount} public playlists`}
       image={image}
       roundImage
-      // likedSongs={user.likedSongs}
     >
 
       <Box color="white" paddingX="2.5rem">

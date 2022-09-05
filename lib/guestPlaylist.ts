@@ -1,10 +1,10 @@
 export const guestPlaylist = {
     id: 'guest', // should be number
-    name: 'default', 
+    name: 'Guest playlist', 
     songs: [
         {
             id: 1,
-            artitst: {
+            artist: {
                 name: 'Purple Cat',
                 id: 1
             },
@@ -15,7 +15,7 @@ export const guestPlaylist = {
         },
         {
             id: 2,
-            artitst: {
+            artist: {
                 name: "LiQWYD",
                 id: 2
             },
@@ -26,7 +26,7 @@ export const guestPlaylist = {
         },
         {
             id: 3,
-            artitst: {
+            artist: {
                 name: "FSM Team",
                 id: 3
             },
@@ -37,7 +37,7 @@ export const guestPlaylist = {
         },
         {
             id: 4,
-            artitst: {
+            artist: {
                 name: "FSM Team",
                 id: 3
             },
@@ -48,7 +48,7 @@ export const guestPlaylist = {
         },
         {
             id: 5,
-            artitst: {
+            artist: {
                 name: "Ben Sound",
                 id: 4
             },
@@ -59,7 +59,7 @@ export const guestPlaylist = {
         },
         {
             id: 6,
-            artitst: {
+            artist: {
                 name: "Glitch",
                 id: 5
             },

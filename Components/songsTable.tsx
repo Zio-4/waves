@@ -14,6 +14,7 @@ const SongTable = ({ songs }) => {
   const removeSongFromFavorites = useStoreActions((store: any) => store.removeFromFavorites)
   const setFavoriteSongs = useStoreActions((store: any) => store.setFavoriteSongs)
   const favoriteSongs = useStoreState((store: any) => store.favoriteSongs)
+  const currentUser = useStoreState((store: any) => store.currentUser)
 
   useEffect(() => {
       try {
@@ -63,6 +64,8 @@ const SongTable = ({ songs }) => {
     localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(songRemovedFavorites))
   }
 
+  console.log('current User ins songs table: ', currentUser)
+
 
   return (
     <Box bg="transparent" color="white">
@@ -83,7 +86,7 @@ const SongTable = ({ songs }) => {
               <Th>#</Th>
               <Th>Title</Th>
               <Th>Date Added</Th>
-              <Th></Th>
+              {currentUser.firstName ? <Th></Th> : null}
               <Th>
                 <AiOutlineClockCircle />
               </Th>
@@ -103,10 +106,13 @@ const SongTable = ({ songs }) => {
               >
                 <Td onClick={() => handlePlay(song)}>{i + 1}</Td>
                 <Td onClick={() => handlePlay(song)}>{song.name}</Td>
-                <Td onClick={() => handlePlay(song)}>{formatDate(song.createdAt)}</Td>
-                <Td paddingRight="0" width="1rem">
-                  {favoriteSongs.includes(song.name) ? <AiFillHeart onClick={() => handleRemoveSong(song.name)}/> : <AiOutlineHeart onClick={() => handleAddSong(song.name)} />}
-                </Td>
+                <Td onClick={() => handlePlay(song)}>{currentUser.firstName ? formatDate(song.createdAt) : 'Aug 8, 2022'}</Td>
+                {currentUser.firstName ? (
+                  <Td paddingRight="0" width="1rem">
+                    {favoriteSongs.includes(song.name) ? <AiFillHeart onClick={() => handleRemoveSong(song.name)}/> : <AiOutlineHeart onClick={() => handleAddSong(song.name)} />}
+                  </Td>
+                  ) : null
+                }
                 <Td onClick={() => handlePlay(song)}>
                   {formatTime(song.duration)}
                 </Td>

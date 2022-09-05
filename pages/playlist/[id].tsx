@@ -2,8 +2,9 @@ import GradientLayout from '../../Components/gradientLayout'
 import SongTable from '../../Components/songsTable'
 import { validateToken } from '../../lib/auth'
 import prisma from '../../lib/prisma'
+import { guestPlaylist } from '../../lib/guestPlaylist'
 
-const getBGColor = (id) => {
+const getBGColor = () => {
   const colors = [
     'red',
     'green',
@@ -15,24 +16,24 @@ const getBGColor = (id) => {
     'yellow',
   ]
 
-  return colors[id - 1] || colors[Math.floor(Math.random() * colors.length)]
+  return colors[Math.floor(Math.random() * colors.length)]
 }
 
-const Playlist = ({ playlist }) => {
-  const color = getBGColor(playlist.id)
+const Playlist = ({ userPlaylist }) => {
+  const color = getBGColor()
 
-  console.log('playlist: ', playlist)
+  console.log('playlist: ', userPlaylist)
 
   return (
     <GradientLayout
       color={color}
       roundImage={false}
-      title={playlist.name}
+      title={userPlaylist ? userPlaylist.name : guestPlaylist.name}
       subtitle="playlist"
-      description={`${playlist.songs.length} songs`}
-      image={`https://picsum.photos/400?random=${playlist.id}`}
+      description={userPlaylist ? `${userPlaylist.songs.length} songs` : '6 songs'}
+      image={userPlaylist ? `https://picsum.photos/400?random=${userPlaylist.id}` : 'https://picsum.photos/400?random=1'}
     >
-      <SongTable songs={playlist.songs} />
+      <SongTable songs={userPlaylist ? userPlaylist.songs : guestPlaylist.songs} />
     </GradientLayout>
   )
 }
@@ -40,38 +41,41 @@ const Playlist = ({ playlist }) => {
 export const getServerSideProps = async ({ query, req }) => {
   let user
 
-  // try {
-  //   user = validateToken(req.cookies.WAVES_ACCESS_TOKEN)
-  // } catch (e) {
-  //   return {
-  //     redirect: {
-  //       permanent: false,
-  //       destination: '/signin',
-  //     },
-  //   }
-  // }
+  if (query.id !== 'guest') {
+    try {
+      user = validateToken(req.cookies.WAVES_ACCESS_TOKEN)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  
+  let userPlaylist
 
-  const [playlist] = await prisma.playlist.findMany({
-    where: {
-      id: +query.id,
-      userId: user.id,
-    },
-    include: {
-      songs: {
-        include: {
-          artist: {
-            select: {
-              name: true,
-              id: true,
+  if (user) {
+    const [playlist] = await prisma.playlist.findMany({
+      where: {
+        id: +query.id,
+        userId: user.id,
+      },
+      include: {
+        songs: {
+          include: {
+            artist: {
+              select: {
+                name: true,
+                id: true,
+              },
             },
           },
         },
       },
-    },
-  })
+    })
+
+    userPlaylist = playlist
+  } 
 
   return {
-    props: { playlist },
+    props: { userPlaylist },
   }
 }
 export default Playlist

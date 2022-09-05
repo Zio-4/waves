@@ -7,7 +7,7 @@ import logo from '../public/logo/wave-logo.svg'
 import { Skeleton, SkeletonCircle, SkeletonText, Spinner } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useStoreState } from 'easy-peasy'
+import { useStoreState, useStoreActions } from 'easy-peasy'
 import { guestPlaylist } from "../lib/guestPlaylist"
 
 const navMenu = [
@@ -24,29 +24,31 @@ const musicMenu = [
 
 const Sidebar = () => {
     const currentUser = useStoreState((store: any) => store.currentUser)
-    const [userPlaylists, setUserPlaylists] = useState([])
-    const [playlistsLoading, setPlaylistsLoading] = useState(true)
-    const [playlistLoaded, setPlaylistLoaded] = useState(false)
+    const setUser = useStoreActions((store: any) => store.setCurrentUser)
+    const { playlists, isLoading, isError } = usePlaylist()
+    const [isDoneLoading, setIsDoneLoading] = useState(false)
     const router = useRouter()
     const { id } = router.query
 
     useEffect(() => {
-        if (currentUser.firstName) {
-            const { playlists, isLoading } = usePlaylist()
-            setPlaylistsLoading(isLoading)
-            setUserPlaylists(playlists)
+        if (!currentUser.firstName) {
+            try {
+                let userInStorage = JSON.parse(localStorage.getItem('currentUser') || '')
+                setUser(userInStorage)
+            } catch(e) {
+                console.error(e)
+            }
         }
-    }, [currentUser])
 
-
-    useEffect(() => {
-        if (!playlistsLoading) {
-            setPlaylistLoaded(true)
+        if (playlists || isError) {
+            setIsDoneLoading(true)
         }
-    }, [playlistsLoading])
+    }, [playlists, isError])
 
+    console.log('currentUser', currentUser)
+    console.log('isDoneLoading', isDoneLoading)
+    console.log('playlists', playlists)
 
-    console.log('Sidebar rerender')
 
     return (
         <Box width="100%" height="calc(100vh - 100px)" bg="black" paddingX="5px" color="gray">
@@ -94,7 +96,7 @@ const Sidebar = () => {
 
                     <List spacing={2}>
                     
-                        {playlistLoaded && userPlaylists.map((playlist, i) => (
+                        {currentUser.firstName && isDoneLoading && playlists.map((playlist, i) => (
                             <ListItem paddingX="20px" key={playlist.id}>
                                 <LinkBox>
                                         <Link href={{
@@ -111,7 +113,24 @@ const Sidebar = () => {
                             </ListItem>
                         ))}
 
-                        {!playlistLoaded && (
+                        {!currentUser.firstName && (
+                            <ListItem paddingX="20px" key={guestPlaylist.id}>
+                                <LinkBox>
+                                        <Link href={{
+                                            pathname: '/playlist/[id]',
+                                            query: { id: guestPlaylist.id }
+                                            }}
+                                            passHref
+                                        >
+                                            <LinkOverlay color={guestPlaylist.id === id ? 'white' : 'gray'}>
+                                                {guestPlaylist.name}
+                                            </LinkOverlay>
+                                        </Link>
+                                </LinkBox>
+                            </ListItem>
+                        )}
+
+                        {!isDoneLoading && (
                             <Stack>
                                 <Skeleton >1</Skeleton>
                                 <Skeleton >1</Skeleton>

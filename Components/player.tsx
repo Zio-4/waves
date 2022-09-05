@@ -20,6 +20,22 @@ const Player = ({ songs, activeSong }) => {
     const repeatRef = useRef(repeat)
     const setActiveSong = useStoreActions((state: any) => state.changeActiveSong)
   
+    // handling seek error when component unmounts
+    useEffect(() => {
+      return () => {
+        setPlaying(false)
+        setSeek(0.0)
+        setIsSeeking(false)
+        setRepeat(false)
+        setShuffle(false)
+        setDuration(0.0)
+        soundRef.current = null
+        repeatRef.current = null
+        setActiveSong(null)
+      }
+    }, [])
+
+
     useEffect(() => {
       let timerId
         
@@ -31,7 +47,10 @@ const Player = ({ songs, activeSong }) => {
         }
   
         timerId = requestAnimationFrame(f)
-        return () => cancelAnimationFrame(timerId)
+        return () => {
+          cancelAnimationFrame(timerId)
+        }
+        
       }
   
       cancelAnimationFrame(timerId)
@@ -44,6 +63,7 @@ const Player = ({ songs, activeSong }) => {
     useEffect(() => {
       repeatRef.current = repeat
     }, [repeat])
+
   
     const setPlayState = (value) => {
       setPlaying(value)

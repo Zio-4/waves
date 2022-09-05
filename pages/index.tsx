@@ -8,33 +8,29 @@ import { useStoreActions, useStoreState } from 'easy-peasy'
 
  
 function Home({ artists, image }) {
-  const [userIsLoaded, setUserIsLoaded] = useState(false)
+  const [isDoneLoading, setIsDoneLoading] = useState(false)
   const { user, isLoading, isError } = useMe()
+  const [userIsGuest, setUserIsGuest] = useState(true)
 
   useEffect(() => {
-    // if (!currentUser.firstName) {
-    //   try {
-    //     const userInStorage = JSON.parse(localStorage.getItem("currentUser") || "")
-    //     if (userInStorage) {
-    //       setUser(userInStorage)
-    //     }
-    //   } catch (e) {
-    //     console.error("currentUser is not in local storage. Error: ", e)
-    //   }
-    // }
-
     // Stop loading animation if user has loaded or if the current is a guest (does not have first name)
+    console.log('isLoading :', isLoading)
     if (!isLoading) {
-      setUserIsLoaded(true)
+      if (user.firstName) {
+        setUserIsGuest(false)
+      }
+      setIsDoneLoading(true)
     }
   }, [isLoading])
+
+  console.log('user', user)
 
   return (
     <GradientLayout 
       color='gray' 
       subtitle="profile"
-      title={isError ? 'Guest' : `${user?.firstName} ${user?.lastName}` } 
-      description={isError ? '1 public playlist' : `${user?.playlistsCount} public playlists`}
+      title={userIsGuest ? 'Guest' : `${user?.firstName} ${user?.lastName}` } 
+      description={userIsGuest ? '1 public playlist' : `${user?.playlistsCount} public playlists`}
       image={image}
       roundImage
     >
@@ -50,11 +46,11 @@ function Home({ artists, image }) {
           {artists.map((artist) => (
             <Box paddingX=".6rem" width="20%" key={artist.name}>
               <Box bg="gray.900" borderRadius="4px" padding="1.2rem" width="100%">
-                <SkeletonCircle size='100%' isLoaded={userIsLoaded}>
+                <SkeletonCircle size='100%' isLoaded={isDoneLoading}>
                   <Image src="https://placekitten.com/300/300" borderRadius="100%"/>
                 </SkeletonCircle>
                 <Box marginTop="20px">
-                  <SkeletonText isLoaded={userIsLoaded}>
+                  <SkeletonText isLoaded={isDoneLoading}>
                     <Text fontSize="large">{artist.name}</Text>
                     <Text fontSize="small">Artist</Text>
                   </SkeletonText>

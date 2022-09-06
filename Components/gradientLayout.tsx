@@ -20,9 +20,10 @@ const GradientLayout = ({
   const currentUser = useStoreState((store: any) => store.currentUser)
 
   useEffect(() => {
-    let descriptionIsLoading = title.includes('undefined') || title.includes('Guest')
+    let descriptionIncludesUndefined = title.includes('undefined')
+    let descriptionIncludesGuest = title.includes('Guest')
 
-    if (!descriptionIsLoading) {
+    if (!descriptionIncludesUndefined && !descriptionIncludesGuest) {
       setUserIsLoaded(true)
     }
   }, [title])

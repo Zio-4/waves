@@ -7,6 +7,7 @@ import Image from 'next/image'
 import logo from '../public/logo/wave-logo.svg'
 import Link from 'next/link'
 import { useStoreActions } from 'easy-peasy'
+import { MdOutlineArrowBack } from 'react-icons/md'
 
 const AuthForm: FC<{ mode: 'signup' | 'signin' }> = ({ mode }) => {
     const [email, setEmail] = useState('')
@@ -26,27 +27,27 @@ const AuthForm: FC<{ mode: 'signup' | 'signin' }> = ({ mode }) => {
     }, [])
     
 
-const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (mode === 'signup') {
-        if (!email || !firstName || !lastName || !password || !confirmPassword) return
-    } else if (!email || !password) {
-        return
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        if (mode === 'signup') {
+            if (!email || !firstName || !lastName || !password || !confirmPassword) return
+        } else if (!email || !password) {
+            return
+        }
+
+        setIsLoading(true)
+        
+        const user = await auth(mode, { email, password, firstName, lastName })
+
+        setFavoriteSongsInStore(user.favorites)
+        localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(user.favorites))
+
+        let currUser = {firstName: user.firstName, lastName: user.lastName,}
+        setCurrentUser(currUser)
+        localStorage.setItem('currentUser', JSON.stringify(currUser))
+
+        router.push('/')
     }
-
-    setIsLoading(true)
-    
-    const user = await auth(mode, { email, password, firstName, lastName })
-
-    setFavoriteSongsInStore(user.favorites)
-    localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(user.favorites))
-
-    let currUser = {firstName: user.firstName, lastName: user.lastName,}
-    setCurrentUser(currUser)
-    localStorage.setItem('currentUser', JSON.stringify(currUser))
-
-    router.push('/')
-}
 
 
   return (
@@ -55,7 +56,7 @@ const handleSubmit = async (e) => {
             <Image src={logo} height={60} width={120}/>
         </Flex>
         <Flex justify='center' align='center' height='calc(100vh - 100px)'>
-            <Box padding='5rem' bg='gray.900' borderRadius='1rem' width='30rem'>
+            <Box paddingX='5rem' paddingY='3rem' bg='gray.900' borderRadius='1rem' width='30rem'>
                 <Box paddingBottom='3rem'>
                     <Text textAlign='center' fontSize='4xl'>{mode === 'signin' ? 'Sign In' : 'Sign Up'}</Text>
                 </Box>
@@ -92,6 +93,12 @@ const handleSubmit = async (e) => {
                         <Box textAlign='center'>Aleady have an account? {<Link href='/signin'><Text display='inline' cursor='pointer' decoration='underline' textUnderlineOffset='0.2rem'>SIGN IN</Text></Link>}</Box>
                     )}      
                 </Box>
+                <Flex justify='start' justifyContent='center' paddingTop='2rem'>
+                    <Box paddingTop='0.3rem' onClick={() => router.push('/')} cursor='pointer'>
+                        <MdOutlineArrowBack/>
+                    </Box>
+                    <Text cursor='pointer' onClick={() => router.push('/')}> Back to home</Text>
+                </Flex>
             </Box>
         </Flex>
     </Box>

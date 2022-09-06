@@ -32,6 +32,7 @@ const Playlist = ({ userPlaylist }) => {
       subtitle="playlist"
       description={userPlaylist ? `${userPlaylist.songs.length} songs` : '6 songs'}
       image={userPlaylist ? `https://picsum.photos/400?random=${userPlaylist.id}` : 'https://picsum.photos/400?random=1'}
+      userIsDoneLoading
     >
       <SongTable songs={userPlaylist ? userPlaylist.songs : guestPlaylist.songs} />
     </GradientLayout>

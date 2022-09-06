@@ -15,16 +15,12 @@ function Home({ artists, image }) {
 
   useEffect(() => {
     // Stop loading animation if user has loaded or if the current is a guest (does not have first name)
-
     if (!isLoading) {
-      // if (user.firstName) {
-      //   setUserIsGuest(false)
-      // }
       setIsDoneLoading(true)
     }
   }, [isLoading])
 
-  // console.log('user', user)
+  console.log('user', user)
 
   return (
     <GradientLayout 
@@ -34,6 +30,7 @@ function Home({ artists, image }) {
       description={currentUser.firstName ? `${user?.playlistsCount} public playlists` : '1 public playlist'}
       image={image}
       roundImage
+      userIsDoneLoading={isDoneLoading}
     >
 
       <Box color="white" paddingX="2.5rem">

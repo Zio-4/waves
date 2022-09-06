@@ -13,21 +13,19 @@ const GradientLayout = ({
   title,
   description,
   roundImage,
+  userIsDoneLoading
 }) => {
   const [userIsLoaded, setUserIsLoaded] = useState(false)
   const router = useRouter()
   const { id } = router.query
   const currentUser = useStoreState((store: any) => store.currentUser)
 
-  useEffect(() => {
-    let descriptionIncludesUndefined = title.includes('undefined')
-    let descriptionIncludesGuest = title.includes('Guest')
-
-    if (!descriptionIncludesUndefined && !descriptionIncludesGuest) {
-      setUserIsLoaded(true)
-    }
-  }, [title])
-  console.log('title in gradient layout :', title)
+  // useEffect(() => {
+  //   if (userIsDoneLoading) {
+  //     setUserIsLoaded(true)
+  //   }
+  // }, [userIsDoneLoading])
+  // console.log('title in gradient layout :', title)
 
   const handleButton = () => {
     if (currentUser.firstName) signOut()
@@ -61,26 +59,26 @@ const GradientLayout = ({
 
         <Flex bg={`${color}.600`} paddingX="40px" paddingBottom="40px" align="end">
               <Box padding="20px">
-                <SkeletonCircle size='40' isLoaded={userIsLoaded}>
+                <SkeletonCircle size='40' isLoaded={userIsDoneLoading}>
                   <Image boxSize="160px" boxShadow="2xl" src={image} borderRadius={roundImage ? '100%' : '3px'}/>
                 </SkeletonCircle>
               </Box>
 
               <Box padding="20px" lineHeight="40px" color="white">
                 <Stack spacing={1}>
-                  <Skeleton isLoaded={userIsLoaded}>
+                  <Skeleton isLoaded={userIsDoneLoading}>
                     <Text fontSize="small" fontWeight="bold" casing="uppercase">
                       {subtitle}
                     </Text>
                   </Skeleton>
                   
-                  <Skeleton isLoaded={userIsLoaded}>
+                  <Skeleton isLoaded={userIsDoneLoading}>
                     <Text fontSize="6xl" fontWeight='extrabold' marginTop='none'>
                       {title}
                     </Text>
                   </Skeleton>
                   
-                  <Skeleton isLoaded={userIsLoaded}>
+                  <Skeleton isLoaded={userIsDoneLoading}>
                     <Text fontSize="small" >
                       {description}
                     </Text>

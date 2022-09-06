@@ -65,7 +65,7 @@ const handleSubmit = async (e) => {
                         <Input borderRadius='2rem' bg='white' textColor='black' placeholder='Email' type='email' onChange={(e) => setEmail(e.target.value)} />
                     </Box>
                     <Box paddingBottom='1rem'>
-                        <Input borderRadius='2rem' bg='white' textColor='black' placeholder='Password' type='password' onChange={(e) => setPassword(e.target.value)} />
+                        <Input borderRadius='2rem' bg='white' textColor='black' placeholder='Password' type='password' autoComplete='current-password' onChange={(e) => setPassword(e.target.value)} />
                     </Box>
                     {mode === 'signup' ? (
                     <Box>
@@ -87,9 +87,9 @@ const handleSubmit = async (e) => {
 
                 <Box paddingTop='2rem'>
                     {mode === 'signin' ? (
-                        <Text textAlign='center'>Don't have an account? {<Link href='/signup' ><Text display='inline' cursor='pointer' decoration='underline' textUnderlineOffset='0.2rem'>SIGN UP</Text></Link>}</Text> 
+                        <Box textAlign='center'>Don't have an account? {<Link href='/signup' ><Text display='inline' cursor='pointer' decoration='underline' textUnderlineOffset='0.2rem'>SIGN UP</Text></Link>}</Box> 
                     ) : (
-                        <Text textAlign='center'>Aleady have an account? {<Link href='/signin'><Text display='inline' cursor='pointer' decoration='underline' textUnderlineOffset='0.2rem'>SIGN IN</Text></Link>}</Text>
+                        <Box textAlign='center'>Aleady have an account? {<Link href='/signin'><Text display='inline' cursor='pointer' decoration='underline' textUnderlineOffset='0.2rem'>SIGN IN</Text></Link>}</Box>
                     )}      
                 </Box>
             </Box>

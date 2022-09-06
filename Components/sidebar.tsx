@@ -36,7 +36,7 @@ const Sidebar = () => {
                 let userInStorage = JSON.parse(localStorage.getItem('currentUser') || '')
                 setUser(userInStorage)
             } catch(e) {
-                console.error(e)
+                // user is a guest and there is no currentUser object in localStorage
             }
         }
 
@@ -45,10 +45,12 @@ const Sidebar = () => {
         }
     }, [playlists, isError])
 
-    console.log('currentUser', currentUser)
-    console.log('isDoneLoading', isDoneLoading)
-    console.log('playlists', playlists)
+    // console.log('currentUser', currentUser)
+    // console.log('isDoneLoading', isDoneLoading)
 
+    // console.log('playlists', playlists)
+
+    // Cannot rely on isError due to the route function handler being wrapped in another handler
 
     return (
         <Box width="100%" height="calc(100vh - 100px)" bg="black" paddingX="5px" color="gray">
@@ -95,23 +97,6 @@ const Sidebar = () => {
                     <Skeleton />
 
                     <List spacing={2}>
-                    
-                        {currentUser.firstName && isDoneLoading && playlists.map((playlist, i) => (
-                            <ListItem paddingX="20px" key={playlist.id}>
-                                <LinkBox>
-                                        <Link href={{
-                                            pathname: '/playlist/[id]',
-                                            query: { id: playlist.id }
-                                            }}
-                                            passHref
-                                        >
-                                            <LinkOverlay color={playlist.id === +id ? 'white' : 'gray'}>
-                                                {playlist.name}
-                                            </LinkOverlay>
-                                        </Link>
-                                </LinkBox>
-                            </ListItem>
-                        ))}
 
                         {!currentUser.firstName && (
                             <ListItem paddingX="20px" key={guestPlaylist.id}>
@@ -129,6 +114,23 @@ const Sidebar = () => {
                                 </LinkBox>
                             </ListItem>
                         )}
+                    
+                        {playlists.length > 1 && playlists.map((playlist, i) => (
+                            <ListItem paddingX="20px" key={playlist.id}>
+                                <LinkBox>
+                                        <Link href={{
+                                            pathname: '/playlist/[id]',
+                                            query: { id: playlist.id }
+                                            }}
+                                            passHref
+                                        >
+                                            <LinkOverlay color={playlist.id === +id ? 'white' : 'gray'}>
+                                                {playlist.name}
+                                            </LinkOverlay>
+                                        </Link>
+                                </LinkBox>
+                            </ListItem>
+                        ))}
 
                         {!isDoneLoading && (
                             <Stack>

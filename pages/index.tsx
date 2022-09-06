@@ -10,27 +10,28 @@ import { useStoreActions, useStoreState } from 'easy-peasy'
 function Home({ artists, image }) {
   const [isDoneLoading, setIsDoneLoading] = useState(false)
   const { user, isLoading, isError } = useMe()
-  const [userIsGuest, setUserIsGuest] = useState(true)
+  // const [userIsGuest, setUserIsGuest] = useState(true)
+  const currentUser = useStoreState((store: any) => store.currentUser)
 
   useEffect(() => {
     // Stop loading animation if user has loaded or if the current is a guest (does not have first name)
-    console.log('isLoading :', isLoading)
+
     if (!isLoading) {
-      if (user.firstName) {
-        setUserIsGuest(false)
-      }
+      // if (user.firstName) {
+      //   setUserIsGuest(false)
+      // }
       setIsDoneLoading(true)
     }
   }, [isLoading])
 
-  console.log('user', user)
+  // console.log('user', user)
 
   return (
     <GradientLayout 
       color='gray' 
       subtitle="profile"
-      title={userIsGuest ? 'Guest' : `${user?.firstName} ${user?.lastName}` } 
-      description={userIsGuest ? '1 public playlist' : `${user?.playlistsCount} public playlists`}
+      title={currentUser.firstName ? `${user?.firstName} ${user?.lastName}` : 'Guest'} 
+      description={currentUser.firstName ? `${user?.playlistsCount} public playlists` : '1 public playlist'}
       image={image}
       roundImage
     >

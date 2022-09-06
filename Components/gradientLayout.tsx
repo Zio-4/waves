@@ -20,10 +20,13 @@ const GradientLayout = ({
   const currentUser = useStoreState((store: any) => store.currentUser)
 
   useEffect(() => {
-    if (title) {
+    let descriptionIsLoading = title.includes('undefined') || title.includes('Guest')
+
+    if (!descriptionIsLoading) {
       setUserIsLoaded(true)
     }
   }, [title])
+  console.log('title in gradient layout :', title)
 
   const handleButton = () => {
     if (currentUser.firstName) signOut()
@@ -32,17 +35,17 @@ const GradientLayout = ({
     }
   }
 
-
   // Add modal to check if user wants to sign out? 
   const signOut = () => {
     fetch('/api/signout')
       .then((r) => r.json())
       .then((data) => console.log('signout response: ', data))
       .catch(e => console.error(e))
+    localStorage.removeItem('currentUser')
     router.push('/signin')
   }
 
-  console.log('current User in gradient layout :', currentUser)
+  // console.log('current User in gradient layout :', currentUser)
 
 
   return (
@@ -54,7 +57,6 @@ const GradientLayout = ({
             </Button>
           </Box>
         </Flex>
-
 
         <Flex bg={`${color}.600`} paddingX="40px" paddingBottom="40px" align="end">
               <Box padding="20px">

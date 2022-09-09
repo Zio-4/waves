@@ -4,7 +4,7 @@ export const store = createStore({
   activeSongs: [],
   activeSong: null,
   favoriteSongs: [],
-  currentUser: {firstName: "", lastName: "", playlists: [], favorites: []},
+  currentUser: {firstName: "", lastName: ""},
   setCurrentUser: action((state: any, payload) => {
     state.currentUser = payload
   }),

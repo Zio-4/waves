@@ -18,7 +18,7 @@ const navMenu = [
 
 const musicMenu = [
     { name: 'Create Playlist', icon: MdPlaylistAdd, route: '/' },
-    { name: 'Favorites', icon: MdFavorite, route: '/' },
+    { name: 'Favorites', icon: MdFavorite, route: '/favorites' },
 ]
 
 
@@ -45,10 +45,6 @@ const Sidebar = () => {
         }
     }, [playlists, isError])
 
-    // console.log('currentUser', currentUser)
-    // console.log('isDoneLoading', isDoneLoading)
-
-    // console.log('playlists', playlists)
 
     // Cannot rely on isError due to the route function handler being wrapped in another handler
 

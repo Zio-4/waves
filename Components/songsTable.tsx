@@ -6,6 +6,7 @@ import { useStoreActions, useStoreState } from 'easy-peasy'
 import { formatDate, formatTime } from '../lib/formatters'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import { expectsResolvedDragConstraints } from 'framer-motion/types/gestures/drag/VisualElementDragControls'
 
 
 const SongTable = ({ songs }) => {
@@ -18,6 +19,21 @@ const SongTable = ({ songs }) => {
   const currentUser = useStoreState((store: any) => store.currentUser)
   const router = useRouter()
   const { id } = router.query
+
+  interface ISong {
+    artist: {
+      name: string
+      id: number
+    }
+    artistId: number
+    createdAt: Date
+    duration: number
+    id: number
+    name: string
+    updatedAt: Date
+    url: string
+  }
+
 
   useEffect(() => {
       try {
@@ -33,42 +49,50 @@ const SongTable = ({ songs }) => {
     playSongs(songs)
   }
 
-  const handleAddSong = async (songName: string) => {
-    addSongToFavorites(songName)
+  const handleAddSong = async (song: ISong) => {
+    const songUpdated = {...song, updatedAt: new Date()}
 
-    const res = await fetch('/api/favorites', {
-      method: 'PATCH',
-      body: JSON.stringify({songName: songName}),
-      headers: { 'Content-type': 'application/json' }
-    })
+    addSongToFavorites(songUpdated)
+
+    // const res = await fetch('/api/favorites', {
+    //   method: 'PATCH',
+    //   body: JSON.stringify({songObject: songUpdated}),
+    //   headers: { 'Content-type': 'application/json' }
+    // })
       // .then(r => r.json())
       // .then(response => console.log('Response from adding song', response))
     
     // Update localStorage
     const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
-    parsedFavoriteSongs.push(songName)
+    parsedFavoriteSongs.push(songUpdated)
     localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(parsedFavoriteSongs))
   }
 
-  const handleRemoveSong = async (songName: string) => {
-    removeSongFromFavorites(songName)
+  const handleRemoveSong = async (songId: number) => {
+    removeSongFromFavorites(songId)
 
-    const res = await fetch('/api/favorites', {
-      method: 'DELETE',
-      body: JSON.stringify({songName: songName}),
-      headers: { 'Content-type': 'application/json' }
-    })
+    // const res = await fetch('/api/favorites', {
+    //   method: 'DELETE',
+    //   body: JSON.stringify({songId: songId}),
+    //   headers: { 'Content-type': 'application/json' }
+    // })
       // .then(r => r.json())
       // .then(response => console.log('Response from deleting song', response))
        
     // Update localStorage
     const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
-    const songRemovedFavorites = parsedFavoriteSongs.filter(song => song !== songName)
+    const songRemovedFavorites = parsedFavoriteSongs.filter(song => song.id !== songId)
     localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(songRemovedFavorites))
   }
 
-  console.log('current User ins songs table: ', currentUser)
+  // console.log('current User ins songs table: ', currentUser)
+  console.log('favorite songs', favoriteSongs)
 
+  function songIsInFavorites(songId: number): boolean{
+    for (let i = 0; i < favoriteSongs.length; i++) {
+      if (favoriteSongs[i].id === songId ) return true
+    }   
+  }
 
   return (
     <Box bg="transparent" color="white">
@@ -105,21 +129,21 @@ const SongTable = ({ songs }) => {
                   },
                 }}
                 // change back to song id after done testing
-                key={song.i}
+                key={song.id}
                 cursor="pointer"
               >
                 <Td onClick={() => handlePlay(song)}>{i + 1}</Td>
                 <Td onClick={() => handlePlay(song)}>{song.name}</Td>
-                {/* <Td onClick={() => handlePlay(song)}>{currentUser.firstName && id !== 'favorites' ? formatDate(song.createdAt) : 'Aug 8, 2022'}</Td> */}
+                <Td onClick={() => handlePlay(song)}>{currentUser.firstName && id !== 'favorites' ? formatDate(song.createdAt) : 'Aug 8, 2022'}</Td>
                 {currentUser.firstName ? (
                   <Td paddingRight="0" width="1rem">
-                    {favoriteSongs.includes(song.name) ? <AiFillHeart onClick={() => handleRemoveSong(song.name)}/> : <AiOutlineHeart onClick={() => handleAddSong(song.name)} />}
+                    {songIsInFavorites(song.id) ? <AiFillHeart onClick={() => handleRemoveSong(song.id)}/> : <AiOutlineHeart onClick={() => handleAddSong(song)} />}
                   </Td>
                   ) : null
                 }
-                {/* <Td onClick={() => handlePlay(song)}>
+                <Td onClick={() => handlePlay(song)}>
                   {id === 'favorites' ? '1:00' : formatTime(song.duration)}
-                </Td> */}
+                </Td>
               </Tr>
             ))}
           </Tbody>

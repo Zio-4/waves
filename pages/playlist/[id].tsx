@@ -22,7 +22,7 @@ const getBGColor = () => {
 const Playlist = ({ userPlaylist }) => {
   const color = getBGColor()
 
-  console.log('playlist: ', userPlaylist)
+  // console.log('playlist: ', userPlaylist)
 
   return (
     <GradientLayout

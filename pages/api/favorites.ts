@@ -3,9 +3,8 @@ import { validateRoute } from '../../lib/auth'
 import prisma from '../../lib/prisma'
 
 export default validateRoute(async (req: NextApiRequest, res: NextApiResponse, user) => {
-    const { songName } = req.body
-
     if (req.method === 'PATCH') {
+        const { songObject } = req.body
 
         try {
             await prisma.user.update({
@@ -14,7 +13,7 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse, u
                 }, 
                 data: {
                     favorites: {
-                        push: songName
+                        push: songObject
                     }
                 }
             })
@@ -28,34 +27,36 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse, u
         }
 
     } else if (req.method === 'DELETE') {
-        try {
-            const favoritesArr = await prisma.user.findUnique({
-                where: {
-                    id: user.id
-                },
-                select: {
-                    favorites: true
-                }
-            })
+        // const { songId } = req.body
 
-            const removedFavorite = favoritesArr.favorites.filter(song => song !== songName)
+        // try {
+        //     const favoritesArr = await prisma.user.findUnique({
+        //         where: {
+        //             id: user.id
+        //         },
+        //         select: {
+        //             favorites: true
+        //         }
+        //     })
 
-            await prisma.user.update({
-                where: {
-                    id: user.id
-                },
-                data: {
-                    favorites: removedFavorite
-                }
-            })
+        //     const removedFavorite = favoritesArr.favorites.filter(song => song.id !== songId)
 
-            res.status(200)
-            res.json({message: 'SUCCESS'})
-        } catch(e) {
-            console.error('Song was not deleted: ', e)
-            res.status(404)
-            res.json({ error: 'FAILED'})
-            return
-        }
+        //     await prisma.user.update({
+        //         where: {
+        //             id: user.id
+        //         },
+        //         data: {
+        //             favorites: removedFavorite
+        //         }
+        //     })
+
+        //     res.status(200)
+        //     res.json({message: 'SUCCESS'})
+        // } catch(e) {
+        //     console.error('Song was not deleted: ', e)
+        //     res.status(404)
+        //     res.json({ error: 'FAILED'})
+        //     return
+        // }
     }
   })

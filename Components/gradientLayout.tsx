@@ -41,6 +41,7 @@ const GradientLayout = ({
       .then((data) => console.log('signout response: ', data))
       .catch(e => console.error(e))
     localStorage.removeItem('currentUser')
+    localStorage.removeItem('WAVES_FAVORITE_SONGS')
     router.push('/signin')
   }
 

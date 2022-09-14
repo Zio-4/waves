@@ -21,6 +21,7 @@ function Home({ artists, image }) {
   }, [isLoading])
 
   console.log('user', user)
+  console.log('current user', currentUser)
 
   return (
     <GradientLayout 

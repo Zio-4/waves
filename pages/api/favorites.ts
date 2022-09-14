@@ -27,36 +27,36 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse, u
         }
 
     } else if (req.method === 'DELETE') {
-        // const { songId } = req.body
+        const { songId } = req.body
 
-        // try {
-        //     const favoritesArr = await prisma.user.findUnique({
-        //         where: {
-        //             id: user.id
-        //         },
-        //         select: {
-        //             favorites: true
-        //         }
-        //     })
+        try {
+            const favoritesArr = await prisma.user.findUnique({
+                where: {
+                    id: user.id
+                },
+                select: {
+                    favorites: true
+                }
+            })
 
-        //     const removedFavorite = favoritesArr.favorites.filter(song => song.id !== songId)
+            const removedFavorite = favoritesArr.favorites.filter((song) => song.id !== songId)
 
-        //     await prisma.user.update({
-        //         where: {
-        //             id: user.id
-        //         },
-        //         data: {
-        //             favorites: removedFavorite
-        //         }
-        //     })
+            await prisma.user.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    favorites: removedFavorite
+                }
+            })
 
-        //     res.status(200)
-        //     res.json({message: 'SUCCESS'})
-        // } catch(e) {
-        //     console.error('Song was not deleted: ', e)
-        //     res.status(404)
-        //     res.json({ error: 'FAILED'})
-        //     return
-        // }
+            res.status(200)
+            res.json({message: 'SUCCESS'})
+        } catch(e) {
+            console.error('Song was not deleted: ', e)
+            res.status(404)
+            res.json({ error: 'FAILED'})
+            return
+        }
     }
   })

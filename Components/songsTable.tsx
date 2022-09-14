@@ -54,13 +54,14 @@ const SongTable = ({ songs }) => {
 
     addSongToFavorites(songUpdated)
 
-    // const res = await fetch('/api/favorites', {
-    //   method: 'PATCH',
-    //   body: JSON.stringify({songObject: songUpdated}),
-    //   headers: { 'Content-type': 'application/json' }
-    // })
-      // .then(r => r.json())
-      // .then(response => console.log('Response from adding song', response))
+    const res = await fetch('/api/favorites', {
+      method: 'PATCH',
+      body: JSON.stringify({songObject: songUpdated}),
+      headers: { 'Content-type': 'application/json' }
+    })
+      .then(r => r.json())
+      .then(response => console.log('Response from adding song', response))
+      .catch(e => console.error(e))
     
     // Update localStorage
     const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
@@ -71,13 +72,14 @@ const SongTable = ({ songs }) => {
   const handleRemoveSong = async (songId: number) => {
     removeSongFromFavorites(songId)
 
-    // const res = await fetch('/api/favorites', {
-    //   method: 'DELETE',
-    //   body: JSON.stringify({songId: songId}),
-    //   headers: { 'Content-type': 'application/json' }
-    // })
-      // .then(r => r.json())
-      // .then(response => console.log('Response from deleting song', response))
+    const res = await fetch('/api/favorites', {
+      method: 'DELETE',
+      body: JSON.stringify({songId: songId}),
+      headers: { 'Content-type': 'application/json' }
+    })
+      .then(r => r.json())
+      .then(response => console.log('Response from deleting song', response))
+      .catch(e => console.error(e))
        
     // Update localStorage
     const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')

@@ -39,13 +39,12 @@ const AuthForm: FC<{ mode: 'signup' | 'signin' }> = ({ mode }) => {
         
         const user = await auth(mode, { email, password, firstName, lastName })
 
-        console.log('hello')
         const objToArray = Object.values(user.favorites)
         console.log('object transformed: ', objToArray)
 
         if (user.favorites !== null) {
-            setFavoriteSongsInStore(user.favorites)
-            localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(user.favorites))
+            setFavoriteSongsInStore(objToArray)
+            localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(objToArray))
         }
 
         let currUser = {firstName: user.firstName, lastName: user.lastName,}

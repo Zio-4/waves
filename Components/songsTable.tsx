@@ -70,7 +70,7 @@ const SongTable = ({ songs }) => {
   }
 
   const handleRemoveSong = async (songId: number) => {
-    removeSongFromFavorites(songId)
+    // removeSongFromFavorites(songId)
 
     const res = await fetch('/api/favorites', {
       method: 'DELETE',
@@ -82,13 +82,13 @@ const SongTable = ({ songs }) => {
       .catch(e => console.error(e))
        
     // Update localStorage
-    const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
-    const songRemovedFavorites = parsedFavoriteSongs.filter(song => song.id !== songId)
-    localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(songRemovedFavorites))
+    // const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
+    // const songRemovedFavorites = parsedFavoriteSongs.filter(song => song.id !== songId)
+    // localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(songRemovedFavorites))
   }
 
   // console.log('current User ins songs table: ', currentUser)
-  console.log('favorite songs', favoriteSongs)
+  console.log('favorite songs: ', favoriteSongs)
 
   function songIsInFavorites(songId: number): boolean{
     for (let i = 0; i < favoriteSongs.length; i++) {

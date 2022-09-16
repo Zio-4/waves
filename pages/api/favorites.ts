@@ -12,9 +12,7 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse, u
                     id: user.id
                 }, 
                 data: {
-                    favorites: {
-                        push: songObject
-                    }
+                    favorites: songObject
                 }
             })
             res.status(200)
@@ -39,16 +37,20 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse, u
                 }
             })
 
-            const removedFavorite = favoritesArr.favorites.filter((song) => song.id !== songId)
+            console.log('favorites in DB: ', favoritesArr)
 
-            await prisma.user.update({
-                where: {
-                    id: user.id
-                },
-                data: {
-                    favorites: removedFavorite
-                }
-            })
+            // const removedFavorite = favoritesArr.favorites.filter((song) => song.id !== songId)
+
+
+
+            // await prisma.user.update({
+            //     where: {
+            //         id: user.id
+            //     },
+            //     data: {
+            //         favorites: {test: 'nothing'}
+            //     }
+            // })
 
             res.status(200)
             res.json({message: 'SUCCESS'})

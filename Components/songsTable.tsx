@@ -32,6 +32,7 @@ const SongTable = ({ songs }) => {
     name: string
     updatedAt: Date
     url: string
+    image: string
   }
 
 
@@ -50,13 +51,12 @@ const SongTable = ({ songs }) => {
   }
 
   const handleAddSong = async (song: ISong) => {
-    const songUpdated = {...song, updatedAt: new Date()}
 
-    addSongToFavorites(songUpdated)
+    addSongToFavorites(song)
 
     const res = await fetch('/api/favorites', {
       method: 'PATCH',
-      body: JSON.stringify({songObject: songUpdated}),
+      body: JSON.stringify({songId: song.id}),
       headers: { 'Content-type': 'application/json' }
     })
       .then(r => r.json())
@@ -65,12 +65,12 @@ const SongTable = ({ songs }) => {
     
     // Update localStorage
     const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
-    parsedFavoriteSongs.push(songUpdated)
+    parsedFavoriteSongs.push(song)
     localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(parsedFavoriteSongs))
   }
 
   const handleRemoveSong = async (songId: number) => {
-    // removeSongFromFavorites(songId)
+    removeSongFromFavorites(songId)
 
     const res = await fetch('/api/favorites', {
       method: 'DELETE',
@@ -82,9 +82,9 @@ const SongTable = ({ songs }) => {
       .catch(e => console.error(e))
        
     // Update localStorage
-    // const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
-    // const songRemovedFavorites = parsedFavoriteSongs.filter(song => song.id !== songId)
-    // localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(songRemovedFavorites))
+    const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
+    const songRemovedFavorites = parsedFavoriteSongs.filter(song => song.id !== songId)
+    localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(songRemovedFavorites))
   }
 
   // console.log('current User ins songs table: ', currentUser)

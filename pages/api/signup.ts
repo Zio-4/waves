@@ -34,6 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                                 name: song.name,
                                 duration: song.duration,
                                 url: song.url,
+                                image: song.image
                             }))
                         }
                 } 

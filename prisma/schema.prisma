@@ -33,6 +33,7 @@ model Song {
   playlists Playlist[]
   duration  Int
   url       String
+  image     String
   User      User?      @relation(fields: [userId], references: [id])
   userId    Int?
 }

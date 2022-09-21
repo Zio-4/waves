@@ -82,7 +82,7 @@ export const artistsData: {
         name: 'Ghibli Chillhop',
         duration: 1355,
         url: 'https://res.cloudinary.com/stackoverflow/video/upload/v1597347970/lofi-res/media/kln7ad4von2kkgkalysx.mp3',
-        image: 'https://res.cloudinary.com/stackoverflow/image/upload/v1597347799/lofi-res/images/zlmm69smymqknehg5wc1.gif'
+        image: 'https://i1.sndcdn.com/artworks-o6a74axNybcflPv7-fMHcMA-t500x500.jpg'
       },
     ],
   },
@@ -126,7 +126,7 @@ export const artistsData: {
         name: 'Lazy Afternoons',
         duration: 163,
         url: 'https://res.cloudinary.com/stackoverflow/video/upload/v1597349287/lofi-res/media/vs0d6qsmiwsovoccrhuj.mp3',
-        image: 'https://res.cloudinary.com/stackoverflow/image/upload/v1597349233/lofi-res/images/sleh6sxq3vhsu4pcv5c3.gif'
+        image: 'https://cdn.shopify.com/s/files/1/0011/6005/2795/articles/02.jpg?v=1627666160'
       },
     ],
   },
@@ -148,7 +148,7 @@ export const artistsData: {
         name: '𝟓 𝟎 𝐬 & 𝟔 𝟎 𝐬 𝐯𝐢𝐛𝐞𝐬',
         duration: 1238,
         url: 'https://res.cloudinary.com/stackoverflow/video/upload/v1597795915/lofi-res/media/udjpmmo6c6xg2aj7ziqv.mp3',
-        image: 'https://res.cloudinary.com/stackoverflow/image/upload/v1597795833/lofi-res/images/sluqqml7gi8hwrsjxkhi.gif'
+        image: 'https://i.scdn.co/image/ab67616d0000b273fd220b07117400ccbc85ed96'
       },
     ],
   },

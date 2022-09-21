@@ -4,7 +4,7 @@ import prisma from '../../lib/prisma'
 
 export default validateRoute(async (req: NextApiRequest, res: NextApiResponse, user) => {
     if (req.method === 'PATCH') {
-        const { songObject } = req.body
+        const { songId } = req.body
 
         try {
             await prisma.user.update({
@@ -12,7 +12,9 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse, u
                     id: user.id
                 }, 
                 data: {
-                    favorites: songObject
+                    favorites: {
+                        connect: { id: songId}
+                    }
                 }
             })
             res.status(200)
@@ -28,29 +30,17 @@ export default validateRoute(async (req: NextApiRequest, res: NextApiResponse, u
         const { songId } = req.body
 
         try {
-            const favoritesArr = await prisma.user.findUnique({
+            await prisma.user.update({
                 where: {
                     id: user.id
                 },
-                select: {
-                    favorites: true
+                data: {
+                    favorites: {
+                        disconnect: { id: songId}
+                    }
                 }
             })
 
-            console.log('favorites in DB: ', favoritesArr)
-
-            // const removedFavorite = favoritesArr.favorites.filter((song) => song.id !== songId)
-
-
-
-            // await prisma.user.update({
-            //     where: {
-            //         id: user.id
-            //     },
-            //     data: {
-            //         favorites: {test: 'nothing'}
-            //     }
-            // })
 
             res.status(200)
             res.json({message: 'SUCCESS'})

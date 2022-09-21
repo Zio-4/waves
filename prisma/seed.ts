@@ -19,9 +19,10 @@ const run = async () => {
                             name: song.name,
                             duration: song.duration,
                             url: song.url,
+                            image: song.image
                         }))
                     }
-            } 
+            }
         })
     }))
 
@@ -38,7 +39,7 @@ const run = async () => {
     })
 
     const songs = await prisma.song.findMany({})
-    await Promise.all(new Array(10).fill(1).map( async (_, i) => {
+    await Promise.all(new Array(5).fill(1).map( async (_, i) => {
         // using create vs upsert because the playlist model 
         // only has an id that is unique which we dont have yet. 
         // i.e. cannot do 'where' as above with artists

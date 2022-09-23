@@ -2,7 +2,7 @@ import { Box, Flex, Text } from '@chakra-ui/layout'
 import { Button, Image, Skeleton, SkeletonCircle, Stack} from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { useStoreState } from 'easy-peasy'
+import { useStoreState, useStoreActions } from 'easy-peasy'
 import { route } from 'next/dist/server/router'
 
 const GradientLayout = ({
@@ -19,6 +19,7 @@ const GradientLayout = ({
   const router = useRouter()
   const { id } = router.query
   const currentUser = useStoreState((store: any) => store.currentUser)
+  const removeUserFromState = useStoreActions((store: any) => store.setCurrentUser)
 
   // useEffect(() => {
   //   if (userIsDoneLoading) {
@@ -42,6 +43,7 @@ const GradientLayout = ({
       .catch(e => console.error(e))
     localStorage.removeItem('currentUser')
     localStorage.removeItem('WAVES_FAVORITE_SONGS')
+    removeUserFromState({firstName: '', lastName: ''})
     router.push('/signin')
   }
 

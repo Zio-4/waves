@@ -4,9 +4,8 @@ import { BsFillPlayFill } from 'react-icons/bs'
 import { AiOutlineClockCircle, AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import { useStoreActions, useStoreState } from 'easy-peasy'
 import { formatDate, formatTime } from '../lib/formatters'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { expectsResolvedDragConstraints } from 'framer-motion/types/gestures/drag/VisualElementDragControls'
 
 
 const SongTable = ({ songs }) => {
@@ -14,49 +13,56 @@ const SongTable = ({ songs }) => {
   const setActiveSong = useStoreActions((store: any) => store.changeActiveSong)
   const addSongToFavorites = useStoreActions((store: any) => store.addToFavorites)
   const removeSongFromFavorites = useStoreActions((store: any) => store.removeFromFavorites)
-  const setFavoriteSongs = useStoreActions((store: any) => store.setFavoriteSongs)
+  // const setFavoriteSongs = useStoreActions((store: any) => store.setFavoriteSongs)
   const favoriteSongs = useStoreState((store: any) => store.favoriteSongs)
   const currentUser = useStoreState((store: any) => store.currentUser)
   const router = useRouter()
-  const { id } = router.query
-
-  interface ISong {
-    artist: {
-      name: string
-      id: number
-    }
-    artistId: number
-    createdAt: Date
-    duration: number
-    id: number
-    name: string
-    updatedAt: Date
-    url: string
-    image: string
-  }
-
+  const { pathname } = router
+  const [songsState, setSongsState] = useState([])
 
   useEffect(() => {
-      try {
-        const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
-        setFavoriteSongs(parsedFavoriteSongs)
-      } catch(e) {
-        console.log('Favorite songs are not in localStorage')
-      } 
+    setSongsState(songs)
   }, [])
+
+
+  // interface ISong {
+  //   artist: {
+  //     name: string
+  //     id: number
+  //   }
+  //   artistId: number
+  //   createdAt: Date
+  //   duration: number
+  //   id: number
+  //   name: string
+  //   updatedAt: Date
+  //   url: string
+  //   image: string
+  // }
+
+
+  // useEffect(() => {
+  //     try {
+  //       const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
+  //       setFavoriteSongs(parsedFavoriteSongs)
+  //     } catch(e) {
+  //       console.log('Favorite songs are not in localStorage')
+  //     } 
+  // }, [])
+
 
   const handlePlay = (activeSong?) => {
     setActiveSong(activeSong || songs[0])
     playSongs(songs)
   }
 
-  const handleAddSong = async (song: ISong) => {
+  const handleAddSong = async (songID: number) => {
 
-    addSongToFavorites(song)
+    addSongToFavorites(songID)
 
     const res = await fetch('/api/favorites', {
       method: 'PATCH',
-      body: JSON.stringify({songId: song.id}),
+      body: JSON.stringify({songId: songID}),
       headers: { 'Content-type': 'application/json' }
     })
       .then(r => r.json())
@@ -64,13 +70,17 @@ const SongTable = ({ songs }) => {
       .catch(e => console.error(e))
     
     // Update localStorage
-    const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
-    parsedFavoriteSongs.push(song)
-    localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(parsedFavoriteSongs))
+    // const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
+    // parsedFavoriteSongs.push(songID)
+    // localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(parsedFavoriteSongs))
   }
 
   const handleRemoveSong = async (songId: number) => {
     removeSongFromFavorites(songId)
+
+    if (pathname === '/favorites') {
+      setSongsState(prev => prev.filter(song => song.id !== songId))
+    }
 
     const res = await fetch('/api/favorites', {
       method: 'DELETE',
@@ -82,19 +92,18 @@ const SongTable = ({ songs }) => {
       .catch(e => console.error(e))
        
     // Update localStorage
-    const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
-    const songRemovedFavorites = parsedFavoriteSongs.filter(song => song.id !== songId)
-    localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(songRemovedFavorites))
+    // const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
+    // const songRemovedFavorites = parsedFavoriteSongs.filter(song => song.id !== songId)
+    // localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(songRemovedFavorites))
   }
 
   // console.log('current User ins songs table: ', currentUser)
-  console.log('favorite songs: ', favoriteSongs)
 
-  function songIsInFavorites(songId: number): boolean{
-    for (let i = 0; i < favoriteSongs.length; i++) {
-      if (favoriteSongs[i].id === songId ) return true
-    }   
-  }
+  // function songIsInFavorites(songId: number): boolean{
+  //   for (let i = 0; i < favoriteSongs.length; i++) {
+  //     if (favoriteSongs[i].id === songId ) return true
+  //   }   
+  // }
 
   return (
     <Box bg="transparent" color="white">
@@ -122,7 +131,7 @@ const SongTable = ({ songs }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {songs.map((song, i) => (
+            {songsState.map((song, i) => (
               <Tr
                 sx={{
                   transition: 'all .3s ',
@@ -136,15 +145,16 @@ const SongTable = ({ songs }) => {
               >
                 <Td onClick={() => handlePlay(song)}>{i + 1}</Td>
                 <Td onClick={() => handlePlay(song)}>{song.name}</Td>
-                <Td onClick={() => handlePlay(song)}>{currentUser.firstName && id !== 'favorites' ? formatDate(song.createdAt) : 'Aug 8, 2022'}</Td>
+                <Td onClick={() => handlePlay(song)}>{currentUser.firstName ? formatDate(song.createdAt) : 'Aug 8, 2022'}</Td>
                 {currentUser.firstName ? (
                   <Td paddingRight="0" width="1rem">
-                    {songIsInFavorites(song.id) ? <AiFillHeart onClick={() => handleRemoveSong(song.id)}/> : <AiOutlineHeart onClick={() => handleAddSong(song)} />}
+                    {favoriteSongs.includes(song.id) || pathname === '/favorites' ? <AiFillHeart onClick={() => handleRemoveSong(song.id)}/> : <AiOutlineHeart onClick={() => handleAddSong(song.id)} />}
                   </Td>
                   ) : null
                 }
                 <Td onClick={() => handlePlay(song)}>
-                  {id === 'favorites' ? '1:00' : formatTime(song.duration)}
+                  {/* {pathname === 'favorites' ? '1:00' : formatTime(song.duration)} */}
+                  {formatTime(song.duration)}
                 </Td>
               </Tr>
             ))}

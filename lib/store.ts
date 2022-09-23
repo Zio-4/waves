@@ -15,7 +15,7 @@ export const store = createStore({
     state.favoriteSongs.push(payload)
   }),
   removeFromFavorites: action((state: any, payload) => {
-    state.favoriteSongs = state.favoriteSongs.filter(song => song.id !== payload)
+    state.favoriteSongs = state.favoriteSongs.filter(id => id !== payload)
   }),
   changeActiveSongs: action((state: any, payload) => {
     state.activeSongs = payload

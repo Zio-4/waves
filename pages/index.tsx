@@ -20,6 +20,8 @@ function Home({ artists, image }) {
     }
   }, [isLoading])
 
+  const topArtists = artists.slice(0, 6)
+
   console.log('user', user)
   console.log('current user', currentUser)
 
@@ -42,7 +44,7 @@ function Home({ artists, image }) {
           </Box>
         </Box>
         <Flex>
-          {artists.map((artist) => (
+          {topArtists.map((artist) => (
             <Box paddingX=".6rem" width="20%" key={artist.name}>
               <Box bg="gray.900" borderRadius="4px" padding="1.2rem" width="100%">
                 <SkeletonCircle size='100%' isLoaded={isDoneLoading}>

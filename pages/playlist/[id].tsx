@@ -3,6 +3,8 @@ import SongTable from '../../Components/songsTable'
 import { validateToken } from '../../lib/auth'
 import prisma from '../../lib/prisma'
 import { guestPlaylist } from '../../lib/guestPlaylist'
+import { useEffect } from 'react'
+import { useStoreActions } from 'easy-peasy'
 
 const getBGColor = () => {
   const colors = [
@@ -19,10 +21,17 @@ const getBGColor = () => {
   return colors[Math.floor(Math.random() * colors.length)]
 }
 
-const Playlist = ({ userPlaylist }) => {
+const Playlist = ({ userPlaylist, favoriteSongsByID }) => {
   const color = getBGColor()
+  const setFavorites = useStoreActions((store: any) => store.setFavoriteSongs)
 
-  console.log('playlist: ', userPlaylist)
+  // console.log('playlist: ', userPlaylist)
+  useEffect(() => {
+    if (favoriteSongsByID) {
+      setFavorites(favoriteSongsByID.favorites)
+    }
+  }, [])
+
 
   return (
     <GradientLayout
@@ -51,6 +60,7 @@ export const getServerSideProps = async ({ query, req }) => {
   }
   
   let userPlaylist
+  let favoriteSongsByID
 
   if (user) {
     const [playlist] = await prisma.playlist.findMany({
@@ -60,6 +70,9 @@ export const getServerSideProps = async ({ query, req }) => {
       },
       include: {
         songs: {
+          orderBy: {
+            id: 'asc'
+          },
           include: {
             artist: {
               select: {
@@ -73,10 +86,28 @@ export const getServerSideProps = async ({ query, req }) => {
     })
 
     userPlaylist = playlist
+
+    favoriteSongsByID = await prisma.user.findUnique({
+      where: {
+        id: user.id,
+      }, 
+      select: {
+        favorites: {
+          select: {
+            id: true
+          }
+        }
+      }
+    })
+    
+    // turning an array of objects to an array of id's for easier use on the frontend
+    for(let i = 0; i < favoriteSongsByID.favorites.length; i++) {
+      favoriteSongsByID.favorites[i] = favoriteSongsByID.favorites[i].id
+    }
   } 
 
   return {
-    props: { userPlaylist },
+    props: { userPlaylist, favoriteSongsByID },
   }
 }
 export default Playlist

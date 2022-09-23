@@ -12,12 +12,12 @@ import { guestPlaylist } from "../lib/guestPlaylist"
 
 const navMenu = [
     { name: 'Home', icon: MdHome, route: '/' },
-    { name: 'Search', icon: MdSearch, route: '/' },
-    { name: 'Your Library', icon: MdLibraryMusic, route: '/' },
+    { name: 'Search', icon: MdSearch, route: '/search' },
+    { name: 'Your Library', icon: MdLibraryMusic, route: '/library' },
 ]
 
 const musicMenu = [
-    { name: 'Create Playlist', icon: MdPlaylistAdd, route: '/' },
+    { name: 'Create Playlist', icon: MdPlaylistAdd, route: '/createplaylist' },
     { name: 'Favorites', icon: MdFavorite, route: '/favorites' },
 ]
 
@@ -29,6 +29,7 @@ const Sidebar = () => {
     const [isDoneLoading, setIsDoneLoading] = useState(false)
     const router = useRouter()
     const { id } = router.query
+    const pathname = router.pathname
 
     useEffect(() => {
         if (!currentUser.firstName) {
@@ -60,7 +61,7 @@ const Sidebar = () => {
                             <ListItem paddingX="20px" fontSize="16px" key={menu.name}>
                                 <LinkBox>
                                     <Link href={menu.route} passHref>
-                                        <LinkOverlay color={id === undefined && menu.name === 'Home' ? 'white' : 'gray'}>
+                                        <LinkOverlay color={menu.route === pathname ? 'white' : 'gray'}>
                                             <ListIcon as={menu.icon} color="white" marginRight="20px" />
                                             {menu.name}
                                         </LinkOverlay>
@@ -77,7 +78,7 @@ const Sidebar = () => {
                             <ListItem paddingX="20px" fontSize="16px" key={menu.name}>
                                 <LinkBox>
                                     <Link href={menu.route} passHref>
-                                        <LinkOverlay>
+                                        <LinkOverlay color={pathname === menu.route ? 'white' : 'gray'}>
                                             <ListIcon as={menu.icon} color="white" marginRight="20px" />
                                             {menu.name}
                                         </LinkOverlay>

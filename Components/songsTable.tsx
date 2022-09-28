@@ -25,32 +25,6 @@ const SongTable = ({ songs }) => {
   }, [])
 
 
-  // interface ISong {
-  //   artist: {
-  //     name: string
-  //     id: number
-  //   }
-  //   artistId: number
-  //   createdAt: Date
-  //   duration: number
-  //   id: number
-  //   name: string
-  //   updatedAt: Date
-  //   url: string
-  //   image: string
-  // }
-
-
-  // useEffect(() => {
-  //     try {
-  //       const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
-  //       setFavoriteSongs(parsedFavoriteSongs)
-  //     } catch(e) {
-  //       console.log('Favorite songs are not in localStorage')
-  //     } 
-  // }, [])
-
-
   const handlePlay = (activeSong?) => {
     setActiveSong(activeSong || songs[0])
     playSongs(songs)
@@ -68,11 +42,7 @@ const SongTable = ({ songs }) => {
       .then(r => r.json())
       .then(response => console.log('Response from adding song', response))
       .catch(e => console.error(e))
-    
-    // Update localStorage
-    // const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
-    // parsedFavoriteSongs.push(songID)
-    // localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(parsedFavoriteSongs))
+
   }
 
   const handleRemoveSong = async (songId: number) => {
@@ -91,19 +61,7 @@ const SongTable = ({ songs }) => {
       .then(response => console.log('Response from deleting song', response))
       .catch(e => console.error(e))
        
-    // Update localStorage
-    // const parsedFavoriteSongs = JSON.parse(localStorage.getItem('WAVES_FAVORITE_SONGS') || '')
-    // const songRemovedFavorites = parsedFavoriteSongs.filter(song => song.id !== songId)
-    // localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify(songRemovedFavorites))
   }
-
-  // console.log('current User ins songs table: ', currentUser)
-
-  // function songIsInFavorites(songId: number): boolean{
-  //   for (let i = 0; i < favoriteSongs.length; i++) {
-  //     if (favoriteSongs[i].id === songId ) return true
-  //   }   
-  // }
 
   return (
     <Box bg="transparent" color="white">

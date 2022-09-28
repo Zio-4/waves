@@ -47,7 +47,6 @@ const GradientLayout = ({
     router.push('/signin')
   }
 
-  // console.log('current User in gradient layout :', currentUser)
 
 
   return (

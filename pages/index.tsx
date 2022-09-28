@@ -22,8 +22,6 @@ function Home({ artists, image }) {
 
   const topArtists = artists.slice(0, 6)
 
-  console.log('user', user)
-  console.log('current user', currentUser)
 
   return (
     <GradientLayout 

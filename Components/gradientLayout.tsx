@@ -21,13 +21,6 @@ const GradientLayout = ({
   const currentUser = useStoreState((store: any) => store.currentUser)
   const removeUserFromState = useStoreActions((store: any) => store.setCurrentUser)
 
-  // useEffect(() => {
-  //   if (userIsDoneLoading) {
-  //     setUserIsLoaded(true)
-  //   }
-  // }, [userIsDoneLoading])
-  // console.log('title in gradient layout :', title)
-
   const handleButton = () => {
     if (currentUser.firstName) signOut()
     else {

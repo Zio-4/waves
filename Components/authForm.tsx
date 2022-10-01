@@ -39,8 +39,6 @@ const AuthForm: FC<{ mode: 'signup' | 'signin' }> = ({ mode }) => {
         
         const user = await auth(mode, { email, password, firstName, lastName })
 
-        // const objToArray = Object.values(user.favorites)
-        // console.log('object transformed: ', objToArray)
 
         localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify([]))
 

@@ -1,9 +1,7 @@
 import GradientLayout from "../Components/gradientLayout"
 import SongTable from "../Components/songsTable"
-import { useStoreActions } from "easy-peasy"
 import prisma from "../lib/prisma"
 import { validateToken } from "../lib/auth"
-import { useEffect } from "react"
 
 const getBGColor = () => {
     const colors = [
@@ -22,13 +20,6 @@ const getBGColor = () => {
 
 const Favorites = ({ favoriteSongs }) => {
     const color = getBGColor()
-    const setFavoriteSongs = useStoreActions((store: any) => store.setFavoriteSongs)
-
-    console.log(favoriteSongs.favorites)
-
-    // useEffect(() => {
-    //   setFavoriteSongs(favoriteSongs.favorites)
-    // }, [])
 
   return (
     <GradientLayout

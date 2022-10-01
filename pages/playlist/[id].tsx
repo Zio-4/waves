@@ -25,7 +25,6 @@ const Playlist = ({ userPlaylist, favoriteSongsByID }) => {
   const color = getBGColor()
   const setFavorites = useStoreActions((store: any) => store.setFavoriteSongs)
 
-  // console.log('playlist: ', userPlaylist)
   useEffect(() => {
     if (favoriteSongsByID) {
       setFavorites(favoriteSongsByID.favorites)

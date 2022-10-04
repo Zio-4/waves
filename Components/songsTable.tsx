@@ -24,6 +24,8 @@ const SongTable = ({ songs }) => {
     setSongsState(songs)
   }, [])
 
+  console.log(songs)
+
 
   const handlePlay = (activeSong?) => {
     setActiveSong(activeSong || songs[0])

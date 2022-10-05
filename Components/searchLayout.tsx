@@ -39,6 +39,7 @@ const SearchLayout = ({children, color}) => {
                   image={song.image} 
                   songName={song.name} 
                   url={song.url}
+                  key={song.id}
                 />
         })}
 

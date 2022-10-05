@@ -13,11 +13,6 @@ module.exports = {
     ignoreDuringBuilds: true,
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com',
-      },
-    ],
+    domains: ['res.cloudinary.com', 'i.scdn.co', 'cdn.shopify.com', 'www.free-stock-music.com', 'i1.sndcdn.com', 'www.free-stock-music.com', 'f4.bcbits.com', ]
   },
 }

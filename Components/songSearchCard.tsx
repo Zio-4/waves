@@ -8,7 +8,7 @@ const SongSearchCard = ({id, artistID, artistName, duration, image, songName, ur
     console.log(image)
 
   return (
-        <Box borderStyle='solid' borderWidth='thin' borderColor='black' bg='black' borderRadius='md' padding='1rem' marginY='1rem' key={id}>
+        <Box borderStyle='solid' borderWidth='thin' borderColor='black' bg='black' borderRadius='md' padding='1rem' marginY='1rem'>
           <Grid
               h='3rem'
               templateRows='repeat(2, 1fr)'

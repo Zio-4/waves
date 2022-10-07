@@ -5,8 +5,18 @@ import Image from 'next/image'
 import { formatTime } from '../lib/formatters'
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import { BsThreeDotsVertical } from 'react-icons/bs'
+import { useStoreActions, useStoreState } from 'easy-peasy'
 
 const SongSearchCard = ({id, artistID, artistName, duration, image, songName, url,}) => {
+    const addSongToFavorites = useStoreActions((store: any) => store.addToFavorites)
+
+    const handleAddSong = () => {
+
+    }
+
+    const handleRemoveSong = () => {
+        
+    }
 
   return (
         <Box  marginY='1rem'>
@@ -29,7 +39,7 @@ const SongSearchCard = ({id, artistID, artistName, duration, image, songName, ur
                         {artistName}
                     </GridItem>
                     <GridItem rowStart={2} colStart={5} colEnd={5} margin='auto'>
-                        < AiOutlineHeart size='1.3rem'/>
+                        < AiOutlineHeart size='1.3rem' onClick={handleAddSong}/>
                     </GridItem>
                     <GridItem rowStart={2} colSpan={1} colStart={6} color='gray' margin='auto'> 
                         {formatTime(duration)}

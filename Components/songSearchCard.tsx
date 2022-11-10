@@ -28,7 +28,7 @@ const SongSearchCard = ({id, artistID, artistName, duration, image, songName, ur
                     gap={2}
                     marginBottom='1rem'
                 >
-                    <GridItem rowSpan={2}  colSpan={1} colEnd={1}  color='white'>
+                    <GridItem rowSpan={2}  colSpan={1} colEnd={1}  color='white' overflow='clipped'>
                         <Image src={image} width={94} height={94}/>
                     </GridItem>
                     <GridItem padding='.8rem'></GridItem>
@@ -39,13 +39,13 @@ const SongSearchCard = ({id, artistID, artistName, duration, image, songName, ur
                         {artistName}
                     </GridItem>
                     <GridItem rowStart={2} colStart={5} colEnd={5} margin='auto'>
-                        < AiOutlineHeart size='1.3rem' onClick={handleAddSong}/>
+                        < AiOutlineHeart size='1.3rem' onClick={handleAddSong} cursor='pointer' color='gray'/>
                     </GridItem>
                     <GridItem rowStart={2} colSpan={1} colStart={6} color='gray' margin='auto'> 
                         {formatTime(duration)}
                     </GridItem>
                     <GridItem rowStart={2} colStart={7} margin='auto'>
-                        <BsThreeDotsVertical size='1.3rem'/>
+                        <BsThreeDotsVertical size='1.3rem' cursor='pointer' color='gray'/>
                     </GridItem>
                 </Grid>
             </Box>

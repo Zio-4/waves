@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Heading, Flex } from '@chakra-ui/layout'
-import { Input, Grid, GridItem, Spinner } from '@chakra-ui/react'
+import { Box, Heading, Flex, } from '@chakra-ui/layout'
+import { Input, Grid, GridItem, Spinner, InputGroup, InputRightElement, InputLeftElement } from '@chakra-ui/react'
 import SongSearchCard from './songSearchCard'
-
+import { FiSearch } from 'react-icons/fi'
 
 const SearchLayout = ({children, color}) => {
   const [allSongs, setAllSongs] = useState([])
@@ -39,15 +39,19 @@ const SearchLayout = ({children, color}) => {
 
   return (
     <Box height="100%" overflowY="auto" bgGradient={`linear(${color}.500 0%, ${color}.600 15%, ${color}.700 40%, rgba(0,0,0,0.95) 75%)`}>
-      <Heading color='white' textAlign='center' paddingTop='2rem'>Search for songs to listen to</Heading>
+      <Heading color='white' textAlign='center' paddingTop='2rem'>Search for some vibes</Heading>
 
       <Flex justifyContent='center'>
-        <Box width='80%' paddingTop='2rem'>
-          <Input placeholder='Ex. Ghibli Chillhop' value={searchInput} onChange={updateAndParseSearchInput} textColor='white'/>
+        <Box width='60%' paddingTop='2rem'>
+          <InputGroup>
+            <InputLeftElement pointerEvents='none' children={<FiSearch color='white'/>}/>
+
+            <Input placeholder='Ex. Ghibli Chillhop' focusBorderColor='none' value={searchInput} onChange={updateAndParseSearchInput} textColor='white'/>
+          </InputGroup>
         </Box>
       </Flex>
 
-      <Box width='80%' margin='auto' paddingTop='1.5rem'>
+      <Box width='60%' margin='auto' paddingTop='1.5rem'>
         {allSongs.length ? (filteredSongs.map((song) => {
           return <SongSearchCard id={song.id} 
                   artistID={song.artist.id} 

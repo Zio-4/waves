@@ -12,12 +12,12 @@ import { guestPlaylist } from "../lib/guestPlaylist"
 
 const navMenu = [
     { name: 'Home', icon: MdHome, route: '/' },
-    { name: 'Search', icon: MdSearch, route: '/search' },
-    { name: 'Your Library', icon: MdLibraryMusic, route: '/library' },
+    { name: 'Search', icon: MdSearch, route: '/' },
+    { name: 'Your Library', icon: MdLibraryMusic, route: '/' },
 ]
 
 const musicMenu = [
-    { name: 'Create Playlist', icon: MdPlaylistAdd, route: '/createplaylist' },
+    { name: 'Create Playlist', icon: MdPlaylistAdd, route: '/' },
     { name: 'Favorites', icon: MdFavorite, route: '/favorites' },
 ]
 

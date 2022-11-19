@@ -7,16 +7,38 @@ import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { useStoreActions, useStoreState } from 'easy-peasy'
 
-const SongSearchCard = ({id, artistID, artistName, duration, image, songName, url,}) => {
+const SongSearchCard = ({id, artistID, artistName, duration, image, songName, url, userFavoriteSongs}) => {
     const addSongToFavorites = useStoreActions((store: any) => store.addToFavorites)
+    const removeSongFromFavorites = useStoreActions((store: any) => store.removeFromFavorites)
+    const user = useStoreState((store: any) => store.currentUser)
 
-    const handleAddSong = () => {
+    const handleAddSong = async (songId: number) => {
+        addSongToFavorites(songId)
 
+        const res = await fetch('/api/favorites', {
+          method: 'PATCH',
+          body: JSON.stringify({songId: songId}),
+          headers: { 'Content-type': 'application/json' }
+        })
+          .then(r => r.json())
+          .then(response => console.log('Response from adding song', response))
+          .catch(e => console.error(e))
     }
 
-    const handleRemoveSong = () => {
-        
+    const handleRemoveSong = async (songId: number) => {
+        removeSongFromFavorites(songId)
+    
+        const res = await fetch('/api/favorites', {
+          method: 'DELETE',
+          body: JSON.stringify({songId: songId}),
+          headers: { 'Content-type': 'application/json' }
+        })
+          .then(r => r.json())
+          .then(response => console.log('Response from deleting song', response))
+          .catch(e => console.error(e))
     }
+
+    console.log('type of userFavorites: ', userFavoriteSongs)
 
   return (
         <Box  marginY='1rem'>
@@ -38,9 +60,13 @@ const SongSearchCard = ({id, artistID, artistName, duration, image, songName, ur
                     <GridItem colSpan={4} rowStart={3} colStart={1} colEnd={4} color='gray'>
                         {artistName}
                     </GridItem>
-                    <GridItem rowStart={2} colStart={5} colEnd={5} margin='auto'>
-                        < AiOutlineHeart size='1.3rem' onClick={handleAddSong} cursor='pointer' color='gray'/>
-                    </GridItem>
+
+                    {user.firstName ? (
+                        <GridItem rowStart={2} colStart={5} colEnd={5} margin='auto'>
+                            {userFavoriteSongs.includes(id) ? <div><AiFillHeart size='1.3rem' onClick={() => handleRemoveSong(id)} cursor='pointer' color='green'/></div> : <div><AiOutlineHeart size='1.3rem' onClick={() => handleAddSong(id)} cursor='pointer' color='gray'/></div>}
+                        </GridItem>
+                    ) : null}
+
                     <GridItem rowStart={2} colSpan={1} colStart={6} color='gray' margin='auto'> 
                         {formatTime(duration)}
                     </GridItem>

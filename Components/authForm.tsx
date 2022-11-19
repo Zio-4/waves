@@ -42,7 +42,7 @@ const AuthForm: FC<{ mode: 'signup' | 'signin' }> = ({ mode }) => {
 
         localStorage.setItem('WAVES_FAVORITE_SONGS', JSON.stringify([]))
 
-        let currUser = {firstName: user.firstName, lastName: user.lastName,}
+        let currUser = {firstName: user.firstName, lastName: user.lastName, id: user.id}
         setCurrentUser(currUser)
         localStorage.setItem('currentUser', JSON.stringify(currUser))
 

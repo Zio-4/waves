@@ -3,21 +3,49 @@ import { Box, Heading, Flex, } from '@chakra-ui/layout'
 import { Input, Grid, GridItem, Spinner, InputGroup, InputRightElement, InputLeftElement } from '@chakra-ui/react'
 import SongSearchCard from './songSearchCard'
 import { FiSearch } from 'react-icons/fi'
+import { useStoreState, useStoreActions } from 'easy-peasy'
 
 const SearchLayout = ({children, color}) => {
   const [allSongs, setAllSongs] = useState([])
   const [searchInput, setSearchInput] = useState('')
   const [filteredSongs, setFilteredSongs] = useState([])
+  const userFavoriteSongs = useStoreState((store: any) => store.favoriteSongs)
+  const user = useStoreState((store: any) => store.currentUser)
+  const setFavoriteSongs = useStoreActions((store: any) => store.setFavoriteSongs)
+
 
   useEffect(() => {
-    fetch('/api/songs', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(r => r.json())
-        .then(songData => setAllSongs(songData))
-  }, [])
+    if (!allSongs.length) {
+      fetch('/api/songs', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(r => r.json())
+        .then(songData => {
+          console.log('triggered')
+          setAllSongs(songData)
+        })
+    }
+
+    if (!userFavoriteSongs.length) {
+      console.log('id passed in: ', user.id)
+
+      fetch('/api/songs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({userId: user.id})
+      }).then(r => r.json())
+        .then(data => {
+          if (!data.message) {
+            setFavoriteSongs(data)
+          }
+        } )
+    }
+
+  }, [user.id])
 
 
 
@@ -52,7 +80,7 @@ const SearchLayout = ({children, color}) => {
       </Flex>
 
       <Box width='60%' margin='auto' paddingTop='1.5rem'>
-        {allSongs.length ? (filteredSongs.map((song) => {
+        {allSongs.length && userFavoriteSongs ? (filteredSongs.map((song) => {
           return <SongSearchCard id={song.id} 
                   artistID={song.artist.id} 
                   artistName={song.artist.name} 
@@ -60,6 +88,7 @@ const SearchLayout = ({children, color}) => {
                   image={song.image} 
                   songName={song.name} 
                   url={song.url}
+                  userFavoriteSongs={userFavoriteSongs}
                   key={song.id}
                 />
         })) : null}

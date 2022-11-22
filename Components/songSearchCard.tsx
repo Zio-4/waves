@@ -3,7 +3,8 @@ import { Box } from '@chakra-ui/layout'
 import { Grid, GridItem } from '@chakra-ui/layout'
 import Image from 'next/image'
 import { formatTime } from '../lib/formatters'
-import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
+import { AiOutlineHeart, AiFillHeart, AiFillSound } from 'react-icons/ai'
+import { IoPlaySharp } from 'react-icons/io5'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { useStoreActions, useStoreState } from 'easy-peasy'
 
@@ -11,6 +12,9 @@ const SongSearchCard = ({id, artistID, artistName, duration, image, songName, ur
     const addSongToFavorites = useStoreActions((store: any) => store.addToFavorites)
     const removeSongFromFavorites = useStoreActions((store: any) => store.removeFromFavorites)
     const user = useStoreState((store: any) => store.currentUser)
+    const playSongs = useStoreActions((store: any) => store.changeActiveSongs)
+    const setActiveSong = useStoreActions((store: any) => store.changeActiveSong)
+    const activeSong = useStoreState((store: any) => store.activeSong)
 
     const handleAddSong = async (songId: number) => {
         addSongToFavorites(songId)
@@ -38,11 +42,15 @@ const SongSearchCard = ({id, artistID, artistName, duration, image, songName, ur
           .catch(e => console.error(e))
     }
 
-    console.log('type of userFavorites: ', userFavoriteSongs)
+    const handlePlay = (activeSong?) => {
+        setActiveSong(activeSong)
+        playSongs([activeSong])
+      }
+
 
   return (
         <Box  marginY='1rem'>
-            <Box borderStyle='solid' borderWidth='thin' borderColor='black' bg='black' borderRadius='md' height='6rem'>
+            <Box borderStyle='solid' borderWidth='thin' borderColor='black' bg='black' borderRadius='md' height='6rem' className='searchCard'>
                 <Grid
                     h='2.5rem'
                     templateRows='repeat(3, 1fr)'
@@ -59,6 +67,23 @@ const SongSearchCard = ({id, artistID, artistName, duration, image, songName, ur
                     </GridItem>
                     <GridItem colSpan={4} rowStart={3} colStart={1} colEnd={4} color='gray'>
                         {artistName}
+                    </GridItem>
+                    <GridItem colSpan={4} rowStart={2} colStart={3} colEnd={3} margin='auto'>
+                        { activeSong === null || activeSong.id !== id ? (
+                            <div><IoPlaySharp cursor='pointer' onClick={() => handlePlay({
+                                    artist: {
+                                        id: artistID,
+                                        name: artistName
+                                    }, 
+                                    duration: duration,
+                                    id: id,
+                                    image: image,
+                                    name: songName,
+                                    url: url
+                                    })}/>
+                            </div>
+                        ) : (<AiFillSound color='green'/>) } 
+
                     </GridItem>
 
                     {user.firstName ? (

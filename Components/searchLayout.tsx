@@ -4,6 +4,8 @@ import { Input, Grid, GridItem, Spinner, InputGroup, InputRightElement, InputLef
 import SongSearchCard from './songSearchCard'
 import { FiSearch } from 'react-icons/fi'
 import { useStoreState, useStoreActions } from 'easy-peasy'
+import ClassicalDude from '../public/ClassicalDude.png'
+import Image from 'next/image'
 
 const SearchLayout = ({children, color}) => {
   const [allSongs, setAllSongs] = useState([])
@@ -23,13 +25,11 @@ const SearchLayout = ({children, color}) => {
         }
       }).then(r => r.json())
         .then(songData => {
-          console.log('triggered')
           setAllSongs(songData)
         })
     }
 
     if (!userFavoriteSongs.length) {
-      console.log('id passed in: ', user.id)
 
       fetch('/api/songs', {
         method: 'POST',
@@ -67,13 +67,12 @@ const SearchLayout = ({children, color}) => {
 
   return (
     <Box height="100%" overflowY="auto" bgGradient={`linear(${color}.500 0%, ${color}.600 15%, ${color}.700 40%, rgba(0,0,0,0.95) 75%)`}>
-      <Heading color='white' textAlign='center' paddingTop='2rem'>Search for some vibes</Heading>
+      <Heading color='white' textAlign='center' paddingTop='2rem'>Search for music</Heading>
 
       <Flex justifyContent='center'>
         <Box width='60%' paddingTop='2rem'>
           <InputGroup>
             <InputLeftElement pointerEvents='none' children={<FiSearch color='white'/>}/>
-
             <Input placeholder='Ex. Ghibli Chillhop' focusBorderColor='none' value={searchInput} onChange={updateAndParseSearchInput} textColor='white'/>
           </InputGroup>
         </Box>
@@ -93,6 +92,12 @@ const SearchLayout = ({children, color}) => {
                 />
         })) : null}
       </Box>
+      
+      {searchInput.length === 0 
+        && <Flex justifyContent='center' marginTop='2rem'>
+        <Image width={750} height={500}  src={ClassicalDude} />
+      </Flex>}
+
 
       <Flex justifyContent='center'>
         {searchInput.length > 0 && allSongs.length === 0 ? <Spinner size='xl'/> : null}

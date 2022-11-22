@@ -14,3 +14,11 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.searchCard {
+  transition: transform .4s;
+}
+
+.searchCard:hover {
+  transform: scale(1.05);
+}

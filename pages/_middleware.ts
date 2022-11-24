@@ -7,6 +7,7 @@ const signedInPages = ['/favorites',]
 export default function middleware(req) {
     if (signedInPages.find((p) => p === req.nextUrl.pathname)) {
         const token = req.cookies.WAVES_ACCESS_TOKEN
+        console.log('token in middleware: ', token)
 
         if (!token) {
             return NextResponse.redirect('/signin')

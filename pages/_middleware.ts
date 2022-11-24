@@ -5,6 +5,8 @@ const signedInPages = ['/favorites',]
 
 // runs before any page request
 export default function middleware(req) {
+    console.log('middleware hit')
+
     if (signedInPages.find((p) => p === req.nextUrl.pathname)) {
         const token = req.cookies.WAVES_ACCESS_TOKEN
         console.log('token in middleware: ', token)

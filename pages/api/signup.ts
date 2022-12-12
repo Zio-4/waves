@@ -22,24 +22,24 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             }
         })
 
-        // await Promise.all(artistsData.map( async (artist) => {
-        //     // upsert: Create or update
-        //     return prisma.artist.upsert({
-        //         where: { name: artist.name },
-        //         update: {},
-        //         create: {
-        //             name: artist.name,
-        //                 songs: {
-        //                     create: artist.songs.map(song => ({
-        //                         name: song.name,
-        //                         duration: song.duration,
-        //                         url: song.url,
-        //                         image: song.image
-        //                     }))
-        //                 }
-        //         } 
-        //     })
-        // }))
+        await Promise.all(artistsData.map( async (artist) => {
+            // upsert: Create or update
+            return prisma.artist.upsert({
+                where: { name: artist.name },
+                update: {},
+                create: {
+                    name: artist.name,
+                        songs: {
+                            create: artist.songs.map(song => ({
+                                name: song.name,
+                                duration: song.duration,
+                                url: song.url,
+                                image: song.image
+                            }))
+                        }
+                } 
+            })
+        }))
 
         const songs = await prisma.song.findMany({})
         await Promise.all(new Array(1).fill(1).map( async (_, i) => {
